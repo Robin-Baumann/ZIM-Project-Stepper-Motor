@@ -1,0 +1,7 @@
+pooling.cc:83:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	8	static
+kernel_util.h:31:26:TfLiteEvalTensor* tflite::micro::GetMutableEvalInput(const TfLiteContext*, const TfLiteNode*, int)	8	static
+kernel_util.h:46:26:TfLiteEvalTensor* tflite::micro::GetEvalOutput(const TfLiteContext*, const TfLiteNode*, int)	8	static
+pooling.cc:26:14:TfLiteStatus tflite::{anonymous}::AverageEval(TfLiteContext*, TfLiteNode*)	40	static
+pooling.cc:55:14:TfLiteStatus tflite::{anonymous}::MaxEval(TfLiteContext*, TfLiteNode*)	40	static
+pooling.cc:90:20:TfLiteRegistration tflite::Register_AVERAGE_POOL_2D()	16	static
+pooling.cc:101:20:TfLiteRegistration tflite::Register_MAX_POOL_2D()	16	static

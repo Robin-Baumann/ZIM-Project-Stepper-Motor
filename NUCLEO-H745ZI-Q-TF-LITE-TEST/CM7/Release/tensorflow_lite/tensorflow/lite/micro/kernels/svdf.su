@@ -1,0 +1,4 @@
+svdf.cc:34:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	8	static
+kernel_util.h:31:26:TfLiteEvalTensor* tflite::micro::GetMutableEvalInput(const TfLiteContext*, const TfLiteNode*, int)	8	static
+svdf.cc:39:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	72	static
+svdf.cc:86:20:TfLiteRegistration tflite::Register_SVDF()	16	static

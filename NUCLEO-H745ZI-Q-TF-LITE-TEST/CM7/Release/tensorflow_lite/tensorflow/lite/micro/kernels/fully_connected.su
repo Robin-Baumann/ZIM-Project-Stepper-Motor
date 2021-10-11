@@ -1,0 +1,8 @@
+fully_connected.cc:31:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	8	static
+fully_connected.cc:37:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	48	static
+runtime_shape.h:54:11:int32_t tflite::RuntimeShape::Dims(int) const	8	static
+fully_connected.h:26:13:void tflite::reference_ops::FullyConnected(const tflite::FullyConnectedParams&, const tflite::RuntimeShape&, const float*, const tflite::RuntimeShape&, const float*, const tflite::RuntimeShape&, const float*, const tflite::RuntimeShape&, float*)	56	static
+fully_connected.h:23:13:void tflite::reference_integer_ops::FullyConnected(const tflite::FullyConnectedParams&, const tflite::RuntimeShape&, const int8_t*, const tflite::RuntimeShape&, const int8_t*, const tflite::RuntimeShape&, const int32_t*, const tflite::RuntimeShape&, int8_t*)	88	static
+kernel_util.h:31:26:TfLiteEvalTensor* tflite::micro::GetMutableEvalInput(const TfLiteContext*, const TfLiteNode*, int)	8	static
+fully_connected.cc:64:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	280	static
+fully_connected.cc:123:20:TfLiteRegistration tflite::Register_FULLY_CONNECTED()	16	static

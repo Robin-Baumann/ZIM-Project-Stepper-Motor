@@ -1,0 +1,10 @@
+21:55:25 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-TFLITE-RNN_CM4 ****
+make -j12 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-TFLITE-RNN_CM4.elf 
+   text	   data	    bss	    dec	    hex	filename
+   4328	     24	   1568	   5920	   1720	NUCLEO-H745ZI-Q-TFLITE-RNN_CM4.elf
+Finished building: default.size.stdout
+ 
+
+21:55:25 Build Finished. 0 errors, 0 warnings. (took 215ms)
+

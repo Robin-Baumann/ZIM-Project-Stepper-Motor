@@ -1,0 +1,3 @@
+ceil.cc:31:14:TfLiteStatus tflite::ops::micro::ceil::Prepare(TfLiteContext*, TfLiteNode*)	40	static
+ceil.cc:48:14:TfLiteStatus tflite::ops::micro::ceil::Eval(TfLiteContext*, TfLiteNode*)	64	static
+ceil.cc:63:20:TfLiteRegistration tflite::ops::micro::Register_CEIL()	16	static

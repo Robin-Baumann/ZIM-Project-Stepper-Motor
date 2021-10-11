@@ -1,0 +1,8 @@
+activations.cc:32:7:void* tflite::{anonymous}::ReluInit(TfLiteContext*, const char*, size_t)	8	static
+activations.cc:70:7:void* tflite::{anonymous}::Relu6Init(TfLiteContext*, const char*, size_t)	8	static
+kernel_util.h:31:26:TfLiteEvalTensor* tflite::micro::GetMutableEvalInput(const TfLiteContext*, const TfLiteNode*, int)	8	static
+kernel_util.h:46:26:TfLiteEvalTensor* tflite::micro::GetEvalOutput(const TfLiteContext*, const TfLiteNode*, int)	8	static
+activations.cc:37:14:TfLiteStatus tflite::{anonymous}::ReluEval(TfLiteContext*, TfLiteNode*)	80	static
+activations.cc:75:14:TfLiteStatus tflite::{anonymous}::Relu6Eval(TfLiteContext*, TfLiteNode*)	88	static
+activations.cc:111:20:TfLiteRegistration tflite::Register_RELU()	16	static
+activations.cc:122:20:TfLiteRegistration tflite::Register_RELU6()	16	static

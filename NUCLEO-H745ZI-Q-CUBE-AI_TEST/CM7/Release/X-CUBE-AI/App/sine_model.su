@@ -1,0 +1,8 @@
+sine_model.c:466:9:ai_sine_model_get_info	136	static
+sine_model.c:511:9:ai_sine_model_get_report	136	static
+sine_model.c:557:10:ai_sine_model_get_error	0	static
+sine_model.c:563:10:ai_sine_model_create	16	static
+sine_model.c:573:11:ai_sine_model_destroy	0	static
+sine_model.c:579:9:ai_sine_model_init	40	static
+sine_model.c:596:8:ai_sine_model_run	0	static
+sine_model.c:603:8:ai_sine_model_forward	0	static

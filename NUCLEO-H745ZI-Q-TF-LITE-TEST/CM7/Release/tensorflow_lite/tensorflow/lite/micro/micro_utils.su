@@ -1,0 +1,2 @@
+micro_utils.cc:28:5:int tflite::ElementCount(const TfLiteIntArray&)	8	static
+micro_utils.cc:36:6:void tflite::SignedSymmetricPerChannelQuantize(const float*, TfLiteIntArray*, int, int8_t*, float*)	40	static

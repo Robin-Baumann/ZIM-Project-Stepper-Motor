@@ -1,0 +1,16 @@
+op_resolver.h:44:35:virtual tflite::OpResolver::TfLiteDelegatePtrVector tflite::OpResolver::GetDelegates(int) const	0	static
+op_resolver.h:62:16:virtual bool tflite::OpResolver::MayContainUserDefinedOps() const	0	static
+micro_op_resolver.h:53:29:virtual const TfLiteRegistration* tflite::MicroOpResolver::FindOp(tflite::BuiltinOperator, int) const	0	static
+micro_op_resolver.h:60:29:virtual const TfLiteRegistration* tflite::MicroOpResolver::FindOp(const char*, int) const	0	static
+main.cpp:207:36:void __tcf_0()	0	static
+micro_mutable_op_resolver.h:46:29:const TfLiteRegistration* tflite::MicroMutableOpResolver<tOpCount>::FindOp(tflite::BuiltinOperator) const [with unsigned int tOpCount = 3]	16	static
+micro_mutable_op_resolver.h:39:7:tflite::MicroMutableOpResolver<3>::~MicroMutableOpResolver()	0	static
+main.cpp:229:82:void __tcf_1()	0	static
+micro_mutable_op_resolver.h:39:7:virtual tflite::MicroMutableOpResolver<3>::~MicroMutableOpResolver()	8	static
+micro_mutable_op_resolver.h:69:41:TfLiteStatus (* tflite::MicroMutableOpResolver<tOpCount>::GetOpDataParser(tflite::BuiltinOperator) const)(const tflite::Operator*, tflite::ErrorReporter*, tflite::BuiltinDataAllocator*, void**) [with unsigned int tOpCount = 3]	16	static
+micro_mutable_op_resolver.h:58:29:const TfLiteRegistration* tflite::MicroMutableOpResolver<tOpCount>::FindOp(const char*) const [with unsigned int tOpCount = 3]	24	static
+main.cpp:305:6:void SystemClock_Config()	120	static,ignoring_inline_asm
+main.cpp:556:17:void DebugLog(const char*)	16	static
+main.cpp:567:6:void Error_Handler()	0	static,ignoring_inline_asm
+micro_mutable_op_resolver.h:539:16:TfLiteStatus tflite::MicroMutableOpResolver<tOpCount>::AddBuiltin(tflite::BuiltinOperator, const TfLiteRegistration&, tflite::MicroOpResolver::BuiltinParseFunction) [with unsigned int tOpCount = 3]	32	static
+main.cpp:125:5:int main()	1248	static,ignoring_inline_asm

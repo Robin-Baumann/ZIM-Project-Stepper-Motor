@@ -1,0 +1,10 @@
+20:00:43 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-RNN-TEST_CM4 ****
+make -j12 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-RNN-TEST_CM4.elf 
+   text	   data	    bss	    dec	    hex	filename
+   2708	     24	   1568	   4300	   10cc	NUCLEO-H745ZI-Q-CUBE-AI-RNN-TEST_CM4.elf
+Finished building: default.size.stdout
+ 
+
+20:00:44 Build Finished. 0 errors, 0 warnings. (took 228ms)
+

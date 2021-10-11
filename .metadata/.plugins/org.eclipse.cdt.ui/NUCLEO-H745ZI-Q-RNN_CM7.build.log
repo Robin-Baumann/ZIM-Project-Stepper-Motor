@@ -1,0 +1,37 @@
+16:21:32 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-RNN_CM7 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I../../Middlewares/ST/AI/Inc -I../X-CUBE-AI/App -Os -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:204:25: warning: unused variable 'activations' [-Wunused-variable]
+  204 |    AI_ALIGNED(32) ai_u8 activations[AI_SINE_MODEL_DATA_ACTIVATIONS_SIZE];
+      |                         ^~~~~~~~~~~
+../Core/Src/main.c:201:21: warning: unused variable 'sine_model' [-Wunused-variable]
+  201 |    static ai_handle sine_model = AI_HANDLE_NULL;
+      |                     ^~~~~~~~~~
+../Core/Src/main.c:196:10: warning: variable 'in_2' set but not used [-Wunused-but-set-variable]
+  196 |    float in_2;
+      |          ^~~~
+../Core/Src/main.c:195:10: warning: variable 'in_1' set but not used [-Wunused-but-set-variable]
+  195 |    float in_1;
+      |          ^~~~
+At top level:
+../Core/Src/main.c:201:21: warning: 'sine_model' defined but not used [-Wunused-variable]
+  201 |    static ai_handle sine_model = AI_HANDLE_NULL;
+      |                     ^~~~~~~~~~
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-RNN_CM7.elf" @"objects.list"  -l:NetworkRuntime700_CM7_GCC.a -mcpu=cortex-m7 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace\NUCLEO-H745ZI-Q-RNN\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-RNN_CM7.map" -Wl,--gc-sections -static -L../../Middlewares/ST/AI/Lib --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-RNN_CM7.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-RNN_CM7.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-RNN_CM7.elf  > "NUCLEO-H745ZI-Q-RNN_CM7.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-RNN_CM7.elf  "NUCLEO-H745ZI-Q-RNN_CM7.bin"
+   text	   data	    bss	    dec	    hex	filename
+  48368	    684	   3080	  52132	   cba4	NUCLEO-H745ZI-Q-RNN_CM7.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-RNN_CM7.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-RNN_CM7.list
+ 
+
+16:21:32 Build Finished. 0 errors, 5 warnings. (took 600ms)
+
