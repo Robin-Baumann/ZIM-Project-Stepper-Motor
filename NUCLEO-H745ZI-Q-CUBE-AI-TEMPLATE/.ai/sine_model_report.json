@@ -1,7 +1,7 @@
 {
     "_allocate_inputs": 0,
     "_allocate_outputs": 0,
-    "cli_parameters": "generate --name sine_model -m C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/Tensorflow Notebooks/Time Series DNN/models/time_series_model_dnn_quant.tflite --type tflite --compression 1 --verbosity 1 --workspace C:\\Users\\robin\\AppData\\Local\\Temp\\mxAI_workspace2684541865382009678414670017255141 --output C:\\Users\\robin\\.stm32cubemx",
+    "cli_parameters": "generate --name sine_model -m C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/Tensorflow Notebooks/Time Series ANN/models/time_series_model_ann_quant.tflite --type tflite --compression 1 --verbosity 1 --workspace C:\\Users\\robin\\AppData\\Local\\Temp\\mxAI_workspace11863657895220013593765323302645031 --output C:\\Users\\robin\\.stm32cubemx",
     "cli_version": {
         "major": 1,
         "micro": 1,
@@ -12,7 +12,7 @@
         "factor": null,
         "layers": {}
     },
-    "date_time": "Thu Oct 28 12:38:02 2021",
+    "date_time": "Mon Nov  1 18:02:56 2021",
     "error": 0,
     "error_str": [],
     "exec_cmd": "generate",
@@ -244,10 +244,10 @@
         }
     ],
     "model_files": [
-        "C:\\Users\\robin\\OneDrive\\Hochschule\\Master\\Masterarbeit\\Programme\\Tensorflow Notebooks\\Time Series DNN\\models\\time_series_model_dnn_quant.tflite"
+        "C:\\Users\\robin\\OneDrive\\Hochschule\\Master\\Masterarbeit\\Programme\\Tensorflow Notebooks\\Time Series ANN\\models\\time_series_model_ann_quant.tflite"
     ],
     "model_n_params": 2145,
-    "model_name": "time_series_model_dnn_quant",
+    "model_name": "time_series_model_ann_quant",
     "model_size": 2340,
     "model_type": "tflite",
     "name": "sine_model",

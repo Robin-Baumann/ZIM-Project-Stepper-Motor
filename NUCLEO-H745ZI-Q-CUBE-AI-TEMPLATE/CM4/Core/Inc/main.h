@@ -58,10 +58,24 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define SPI_CS_Pin GPIO_PIN_4
+#define SPI_CS_GPIO_Port GPIOA
+#define SPI_CLK_Pin GPIO_PIN_5
+#define SPI_CLK_GPIO_Port GPIOA
+#define SPI_MISO_Pin GPIO_PIN_6
+#define SPI_MISO_GPIO_Port GPIOA
+#define NFREEZ_Pin GPIO_PIN_7
+#define NFREEZ_GPIO_Port GPIOE
+#define CLK16_Pin GPIO_PIN_8
+#define CLK16_GPIO_Port GPIOE
+#define DRV_EN_Pin GPIO_PIN_13
+#define DRV_EN_GPIO_Port GPIOE
 #define STLINK_RX_Pin GPIO_PIN_8
 #define STLINK_RX_GPIO_Port GPIOD
 #define STLINK_TX_Pin GPIO_PIN_9
 #define STLINK_TX_GPIO_Port GPIOD
+#define SPI_MOSI_Pin GPIO_PIN_5
+#define SPI_MOSI_GPIO_Port GPIOB
 #define LED_YELLOW_Pin GPIO_PIN_1
 #define LED_YELLOW_GPIO_Port GPIOE
 void   MX_ETH_Init(void);

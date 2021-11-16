@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    sine_model.h
   * @author  AST Embedded Analytics Research Platform
-  * @date    Thu Oct 28 12:38:02 2021
+  * @date    Mon Nov  1 18:02:56 2021
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * @attention
@@ -27,7 +27,7 @@
 
 /******************************************************************************/
 #define AI_SINE_MODEL_MODEL_NAME          "sine_model"
-#define AI_SINE_MODEL_ORIGIN_MODEL_NAME   "time_series_model_dnn_quant"
+#define AI_SINE_MODEL_ORIGIN_MODEL_NAME   "time_series_model_ann_quant"
 
 /******************************************************************************/
 #define AI_SINE_MODEL_ACTIVATIONS_ALIGNMENT   (4)

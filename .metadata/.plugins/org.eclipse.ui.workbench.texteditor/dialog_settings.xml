@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="GREEN"/>
+		<item key="selection" value="COVER"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="green"/>
-			<item value="yellow"/>
-			<item value="lstm"/>
-			<item value="while"/>
-			<item value="add"/>
-			<item value="extern &quot;C&quot; void __attribute__((weak)) DebugLog(const char* s) {"/>
-			<item value="begin 4"/>
-			<item value="tim16"/>
+			<item value="88"/>
+			<item value="cover"/>
+			<item value="A1"/>
+			<item value="XTARGET"/>
+			<item value="0x22"/>
+			<item value="VACTUAL"/>
+			<item value="hspi"/>
+			<item value="0xB7"/>
 		</list>
 		<list key="replacehistory">
+			<item value="(uint8_t)0x"/>
 			<item value="tim17"/>
 			<item value="time_stamp"/>
 		</list>

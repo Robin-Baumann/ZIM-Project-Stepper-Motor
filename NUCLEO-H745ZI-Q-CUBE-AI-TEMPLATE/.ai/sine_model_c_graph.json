@@ -594,7 +594,7 @@
     "c_weights_count": 1,
     "c_weights_header": 0,
     "data_alignment": 4,
-    "date_time": "Thu Oct 28 12:38:02 2021",
+    "date_time": "Mon Nov  1 18:02:56 2021",
     "inputs": [
         "flatten_1_input_output"
     ],
@@ -608,7 +608,7 @@
         "series": "generic",
         "weights": 2340
     },
-    "model_name": "time_series_model_dnn_quant",
+    "model_name": "time_series_model_ann_quant",
     "outputs": [
         "conversion_5_output"
     ],
