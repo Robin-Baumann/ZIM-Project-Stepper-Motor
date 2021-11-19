@@ -32,11 +32,12 @@
 									<listOptionValue builtIn="false" value="DEBUG"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.includepaths.1851115827" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.includepaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/helpers}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ramp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.906322450" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
 							</tool>
@@ -56,9 +57,10 @@
 									<listOptionValue builtIn="false" value="../../Drivers/CMSIS/Device/ST/STM32H7xx/Include"/>
 									<listOptionValue builtIn="false" value="../../Drivers/CMSIS/Include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/helpers}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ramp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1992326010" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -82,6 +84,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ramp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp.1256098501" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp"/>
 							</tool>
@@ -104,10 +107,10 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="TMC-API"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Common"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="TMC-API"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -141,11 +144,12 @@
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.646152556" name="MCU GCC Assembler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler">
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.321421689" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.value.g0" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.includepaths.1216891223" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.includepaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/helpers}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ramp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.1378306679" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
 							</tool>
@@ -165,9 +169,10 @@
 									<listOptionValue builtIn="false" value="../../Drivers/CMSIS/Include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/helpers}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ramp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.2104884652" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -190,6 +195,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ramp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp.1608178590" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp"/>
 							</tool>
@@ -212,10 +218,10 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="TMC-API"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Common"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="TMC-API"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

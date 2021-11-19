@@ -50,6 +50,8 @@ extern "C" {
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -58,16 +60,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define CLK16_Pin GPIO_PIN_6
+#define CLK16_GPIO_Port GPIOF
 #define SPI_CS_Pin GPIO_PIN_4
 #define SPI_CS_GPIO_Port GPIOA
 #define SPI_CLK_Pin GPIO_PIN_5
 #define SPI_CLK_GPIO_Port GPIOA
 #define SPI_MISO_Pin GPIO_PIN_6
 #define SPI_MISO_GPIO_Port GPIOA
-#define NFREEZ_Pin GPIO_PIN_7
-#define NFREEZ_GPIO_Port GPIOE
-#define CLK16_Pin GPIO_PIN_8
-#define CLK16_GPIO_Port GPIOE
 #define DRV_EN_Pin GPIO_PIN_13
 #define DRV_EN_GPIO_Port GPIOE
 #define STLINK_RX_Pin GPIO_PIN_8

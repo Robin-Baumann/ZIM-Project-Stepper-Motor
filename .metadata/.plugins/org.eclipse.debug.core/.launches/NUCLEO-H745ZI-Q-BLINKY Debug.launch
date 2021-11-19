@@ -10,7 +10,4 @@
     <booleanAttribute key="org.eclipse.debug.core.launchGroup.1.enabled" value="true"/>
     <stringAttribute key="org.eclipse.debug.core.launchGroup.1.mode" value="inherit"/>
     <stringAttribute key="org.eclipse.debug.core.launchGroup.1.name" value="NUCLEO-H745ZI-Q-BLINKY_CM4 Debug"/>
-    <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
-        <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
-    </listAttribute>
 </launchConfiguration>

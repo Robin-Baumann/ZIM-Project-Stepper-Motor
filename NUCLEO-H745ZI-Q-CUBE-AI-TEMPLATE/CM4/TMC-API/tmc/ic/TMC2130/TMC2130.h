@@ -8,7 +8,7 @@
 #ifndef TMC_IC_TMC2130_H_
 #define TMC_IC_TMC2130_H_
 
-#include "tmc/helpers/API_Header.h"
+#include "API_Header.h"
 #include "TMC2130_Register.h"
 #include "TMC2130_Constants.h"
 #include "TMC2130_Mask_Shift.h"

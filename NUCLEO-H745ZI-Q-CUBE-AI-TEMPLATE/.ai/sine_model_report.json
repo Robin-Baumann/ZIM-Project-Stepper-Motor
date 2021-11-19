@@ -1,7 +1,7 @@
 {
     "_allocate_inputs": 0,
     "_allocate_outputs": 0,
-    "cli_parameters": "generate --name sine_model -m C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/Tensorflow Notebooks/Time Series ANN/models/time_series_model_ann_quant.tflite --type tflite --compression 1 --verbosity 1 --workspace C:\\Users\\robin\\AppData\\Local\\Temp\\mxAI_workspace11863657895220013593765323302645031 --output C:\\Users\\robin\\.stm32cubemx",
+    "cli_parameters": "generate --name sine_model -m C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/Tensorflow Notebooks/Time Series ANN/models/time_series_model_ann_quant.tflite --type tflite --compression 1 --verbosity 1 --workspace C:\\Users\\robin\\AppData\\Local\\Temp\\mxAI_workspace2408488430706007632968738054606064 --output C:\\Users\\robin\\.stm32cubemx",
     "cli_version": {
         "major": 1,
         "micro": 1,
@@ -12,14 +12,14 @@
         "factor": null,
         "layers": {}
     },
-    "date_time": "Mon Nov  1 18:02:56 2021",
+    "date_time": "Fri Nov 19 17:35:50 2021",
     "error": 0,
     "error_str": [],
     "exec_cmd": "generate",
     "exec_duration": 0.0,
-    "hash": "6b223450e433a8cc3a25829185f2e492",
+    "hash": "95c2b30bc2f72243cb946fb9d327af84",
     "inputs": [
-        "flatten_1_input"
+        "flatten_37_input"
     ],
     "layers": [
         {
@@ -43,7 +43,7 @@
             },
             "id": 0,
             "inputs": [],
-            "name": "flatten_1_input",
+            "name": "flatten_37_input",
             "type": "Input"
         },
         {
@@ -67,7 +67,7 @@
             },
             "id": 0,
             "inputs": [
-                "flatten_1_input"
+                "flatten_37_input"
             ],
             "name": "conversion_0",
             "type": "Conversion"
@@ -269,7 +269,7 @@
         {
             "c_size": 128,
             "c_type": "float",
-            "name": "flatten_1_input"
+            "name": "flatten_37_input"
         }
     ],
     "rom_n_macc": 2275,

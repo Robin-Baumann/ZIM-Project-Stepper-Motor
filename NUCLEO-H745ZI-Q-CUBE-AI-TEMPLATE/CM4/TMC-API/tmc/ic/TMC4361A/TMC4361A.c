@@ -10,7 +10,10 @@
 // => SPI wrapper
 // Send [length] bytes stored in the [data] array over SPI and overwrite [data]
 // with the replies. data[0] is the first byte sent and received.
-extern void tmc4361A_readWriteArray(uint8_t channel, uint8_t *data, size_t length);
+extern void tmc4361A_readWriteArray(uint8_t channel, uint8_t *data, size_t length)
+{
+	sendController(&data[0]);
+}
 // <= SPI wrapper
 
 // Writes (x1 << 24) | (x2 << 16) | (x3 << 8) | x4 to the given address
