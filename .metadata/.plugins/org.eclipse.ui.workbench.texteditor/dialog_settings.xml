@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="DRV_EN"/>
+		<item key="selection" value="hspi1"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="hspi2"/>
+			<item value="daten"/>
+			<item value="24"/>
+			<item value="TIM_CHANNEL_1"/>
+			<item value="CLK"/>
 			<item value="drv_EN"/>
 			<item value="/* USER CODE B"/>
 			<item value="CONFIG_READY"/>
-			<item value="periodicJob"/>
-			<item value="tmc2130_writeInt"/>
-			<item value="TMC4361A"/>
-			<item value="sys"/>
-			<item value="CS_Pin"/>
 		</list>
 		<list key="replacehistory">
+			<item value="hspi1"/>
+			<item value="datagram"/>
 			<item value="HAL_Delay(1)"/>
 			<item value="2130"/>
 			<item value="TM2130"/>
 			<item value="uint8_t"/>
 			<item value="uint64_t"/>
 			<item value="(uint8_t)0x"/>
-			<item value="tim17"/>
-			<item value="time_stamp"/>
 		</list>
 	</section>
 </section>

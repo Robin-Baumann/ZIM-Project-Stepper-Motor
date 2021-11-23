@@ -12,7 +12,7 @@
 // with the reply. The first byte sent/received is data[0].
 extern void tmc2130_readWriteArray(uint8_t channel, uint8_t *data, size_t length)
 {
-	sendDriver(&data[0], length);
+	sendDriver(&data[0], &data[1]);
 }
 // <= SPI wrapper
 
