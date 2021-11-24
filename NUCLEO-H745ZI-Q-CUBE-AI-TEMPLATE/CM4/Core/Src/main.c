@@ -204,8 +204,9 @@ int main(void)
 
 
 	// Say Hello
-	buf_len = sprintf(buf, "\n\nCortex M4 Hello\r\n");
+	buf_len = sprintf(buf, "\nCortex M4 Hello\r\n\r\n");
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+	HAL_Delay(1000);
 
 
 	// TEST SETUP
