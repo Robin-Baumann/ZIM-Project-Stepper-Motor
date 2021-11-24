@@ -24,8 +24,13 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include "TMC_4361A_Register_Settings.h"
-#include "TMC_2130_Register_Settings.h"
+#include "stdio.h"
+#include "string.h"
+#include "stdlib.h"
+#include "time.h"
+
+#include "TMC4361A.h"
+#include "TMC2130.h"
 
 /* USER CODE END Includes */
 
@@ -84,6 +89,32 @@ UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 
+static const int32_t TMC4361A_defaultRegisterSetting[TMC4361A_REGISTER_COUNT] =
+{
+//		  0,   		 1,   		2,   	   3,   	  4,   		 5,   		6,   	   7,   	  8,   		 9,   		A,   	   B,   	  C,   		 D,   		E,   	   F
+ 0x00006020,0x00000000,0x00000000,0x00000000,0x4440004C,0x00000003,0x00000000,0x00000400,0x00000000,0x00000000,0x00FB0C80,0x82029805,0x00000000,0x00000000,		    0,         0, // 0x00 - 0x0F
+ 0x00040001,0x00000000,0x01000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00FF00FF,0x00000000,0x00000000,0x00000280, // 0x10 - 0x1F
+ 0x00000001,0x00000000,	       0,	       0,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000, // 0x20 - 0x2F
+ 0x00000000,0x00927C00,0x00000000,0x00000000,0x00000000,0x00000000,	        0,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000, // 0x30 - 0x3F
+ 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000, // 0x40 - 0x4F
+ 0x00000000,	     0,	        0,0xFFFFFFFF,	      0,0x00000000,0x00A000A0,0x00F00000,0x00000190,0x00000000,	        0,	       0,0x00000000,	     0,0x00000000,0x00000000, // 0x50 - 0x5F
+ 0x00000000,0x00000000,0x00FFFFFF,0x00000000,	      0,	     0,	        0,0x00000000,0x00000000,0x00000000,	        0,	       0,	      0,	     0,	        0,	       0, // 0x60 - 0x6F
+ 0xAAAAB554,0x4A9554AA,0x24492929,0x10104222,0xFBFFFFFF,0xB5BB777D,0x49295556,0x00404222,0xFFFF8056,	     0,	        0,	       0,	      0,0x00000000,0x00F70000,	       0  // 0x70 - 0x7F
+};
+
+static const int32_t TMC2130_defaultRegisterSetting[TMC2130_REGISTER_COUNT] =
+{
+//		  0,   		 1,   		2,   	   3,   	  4,   		 5,   		6,   	   7,   	  8,   		 9,   		A,   	   B,   	  C,   		 D,   		E,   	   F
+ 0x00000000,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,		    0,         0, // 0x00 - 0x0F
+ 0x00071703,0x00000000,         0,0x00000000,0x00000000,0x00000000,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0, // 0x10 - 0x1F
+          0,         0,	        0,	       0,         0,         0,         0,         0,         0,         0,         0,         0,         0,0x00000000,         0,         0, // 0x20 - 0x2F
+          0,         0,         0,0x00000000,         0,         0,	        0,         0,         0,         0,         0,         0,         0,         0,         0,         0, // 0x30 - 0x3F
+          0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0, // 0x40 - 0x4F
+          0,	     0,	        0,         0,	      0,         0,         0,         0,         0,         0,	        0,	       0,         0,	     0,         0,         0, // 0x50 - 0x5F
+ 0xAAAAB554,0x4A9554AA,0x24492929,0x10104222,0xFBFFFFFF,0xB5BB777D,0x49295556,0x00404222,0xFFFF8056,0x00F70000,	        0,	       0,0x000101D5,0x00000000,0x00000000,	       0, // 0x60 - 0x6F
+ 0x000504C8,         0,0x00000000,         0,         0,         0,         0,         0,         0,	     0,	        0,	       0,	      0,         0,         0,	       0  // 0x70 - 0x7F
+};
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,8 +123,10 @@ static void MX_SPI1_Init(void);
 static void MX_TIM16_Init(void);
 /* USER CODE BEGIN PFP */
 
-void sendController(uint8_t adress, uint32_t datagram);
-void sendDriver(uint8_t adress, uint32_t datagram);
+void writeController(uint8_t adress, uint32_t datagram);
+void writeDriver(uint8_t adress, uint32_t datagram);
+
+uint32_t readController(uint8_t adress);
 
 void setDefaultRegisterStateController(void);
 void setDefaultRegisterStateDriver(void);
@@ -149,28 +182,37 @@ int main(void)
   MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
-  // Start PWM pin (CLK16)
-  HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
+	// Start PWM pin (CLK16)
+	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
 
-  // Enable SPI
-  __HAL_SPI_ENABLE(&hspi1);
+	// Enable SPI
+	__HAL_SPI_ENABLE(&hspi1);
 
-	// Delay before writing to register
-	HAL_Delay(100);
+	// Inint and buffer for uart text
+	MX_USART3_UART_Init();
+	char buf[1000];
+	int buf_len = 0;
+
 
 	// software reset
-	sendController(0x4F,0x52535400);
+	HAL_Delay(100);
+	writeController(TMC4361A_RESET_REG,0x52535400);
 
 	// set default register settings
 	setDefaultRegisterStateController();
 	setDefaultRegisterStateDriver();
 
 
+	// Say Hello
+	buf_len = sprintf(buf, "\n\nCortex M4 Hello\r\n");
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
+
 	// TEST SETUP
 
 	// setup for position mode without any ramp
-	sendController(0x20, 0x00000004); // RAMPMODE= Position Mode / no Ramp
-	sendController(0x24, 0x00DFFFFF); // VMAX=100000
+	writeController(TMC4361A_RAMPMODE, 0x00000004); // RAMPMODE= Position Mode / no Ramp
+	writeController(TMC4361A_VMAX, 0x00DFFFFF); // VMAX=100000
 
   /* USER CODE END 2 */
 
@@ -182,9 +224,9 @@ int main(void)
 	HAL_GPIO_TogglePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin);
 
 	// do 2 revolutions and back continously
-	sendController(0x37, 0x00019000); // xtarget
+	writeController(TMC4361A_X_TARGET, 0x00019000);
 	HAL_Delay(3000);
-	sendController(0x37, 0x00000000); // xactual
+	writeController(TMC4361A_X_TARGET, 0x00000000);
 	HAL_Delay(3000);
 
     /* USER CODE END WHILE */
@@ -441,10 +483,10 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-void sendController(uint8_t address, uint32_t datagram)
+void writeController(uint8_t address, uint32_t datagram)
 {
 	// buffer variables
-	uint8_t t_address = address | 0x80;
+	uint8_t t_address = address | TMC4361A_WRITE_BIT;
 	uint8_t t_data1 = (datagram >> 24) & 0xff;
 	uint8_t t_data2 = (datagram >> 16) & 0xff;
 	uint8_t t_data3 = (datagram >> 8) & 0xff;
@@ -460,20 +502,45 @@ void sendController(uint8_t address, uint32_t datagram)
 	HAL_GPIO_WritePin(SPI_CS_GPIO_Port, SPI_CS_Pin, GPIO_PIN_SET);
 }
 
-void sendDriver(uint8_t address, uint32_t datagram)
+void writeDriver(uint8_t address, uint32_t datagram)
 {
-  sendController(0x6D, address | 0x80);
-  sendController(0x6C, datagram);
+  writeController(TMC4361A_COVER_HIGH_WR, address | TMC2130_WRITE_BIT);
+  writeController(TMC4361A_COVER_LOW_WR, datagram);
   HAL_Delay(1);
 }
 
+uint32_t readController(uint8_t address)
+{
+	// buffer variables
+	uint32_t t_datagram[5];
+	t_datagram[0] = address;
+
+	uint32_t r_datagram[5];
+
+	HAL_GPIO_WritePin(SPI_CS_GPIO_Port, SPI_CS_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &t_datagram[0], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &r_datagram[0], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &t_datagram[1], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &r_datagram[1], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &t_datagram[2], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &r_datagram[2], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &t_datagram[3], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &r_datagram[3], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &t_datagram[4], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &r_datagram[4], 1, 10);
+	HAL_GPIO_WritePin(SPI_CS_GPIO_Port, SPI_CS_Pin, GPIO_PIN_SET);
+
+	return ((uint32_t)r_datagram[0] << 24) | ((uint32_t)r_datagram[1] << 16) | (r_datagram[2] << 8) | r_datagram[3];
+}
+
+
 void setDefaultRegisterStateController(void)
 {
-	for(uint8_t i=0; i<128; i++)
+	for(uint8_t i=0; i<TMC4361A_REGISTER_COUNT; i++)
 	{
-		if(TMC4361A_RegisterAccess[i] != 0x00 && TMC4361A_RegisterAccess[i] != 0x01 && TMC4361A_RegisterAccess[i] != 0x13)
+		if(tmc4361A_defaultRegisterAccess[i] != 0x00 && tmc4361A_defaultRegisterAccess[i] != 0x01 && tmc4361A_defaultRegisterAccess[i] != 0x13)
 		{
-			sendController(i, TMC4361A_defaultRegisterState[i]);
+			writeController(i, TMC4361A_defaultRegisterSetting[i]);
 		}
 
 	}
@@ -481,11 +548,11 @@ void setDefaultRegisterStateController(void)
 
 void setDefaultRegisterStateDriver(void)
 {
-	for(uint8_t i=0; i<128; i++)
+	for(uint8_t i=0; i<TMC2130_REGISTER_COUNT; i++)
 	{
-		if(TMC2130_RegisterAccess[i] != 0x00 && TMC2130_RegisterAccess[i] != 0x01 && TMC2130_RegisterAccess[i] != 0x21)
+		if(tmc2130_defaultRegisterAccess[i] != 0x00 && tmc2130_defaultRegisterAccess[i] != 0x01 && tmc2130_defaultRegisterAccess[i] != 0x21)
 		{
-			sendDriver(i, TMC2130_defaultRegisterState[i]);
+			writeDriver(i, TMC2130_defaultRegisterSetting[i]);
 		}
 
 	}

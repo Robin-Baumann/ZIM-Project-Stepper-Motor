@@ -12,7 +12,7 @@
 // with the replies. data[0] is the first byte sent and received.
 extern void tmc4361A_readWriteArray(uint8_t channel, uint8_t *data, size_t length)
 {
-	sendController(&data[0], &data[1]);
+
 }
 // <= SPI wrapper
 
