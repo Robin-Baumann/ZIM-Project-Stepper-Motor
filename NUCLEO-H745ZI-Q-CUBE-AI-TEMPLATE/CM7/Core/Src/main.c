@@ -289,12 +289,12 @@ Error_Handler();
 	  	prediction_error = (prediction_error < 0) ? prediction_error*(-1) : prediction_error;
 
 	  	// Print output of neural network
-	  	buf_len = sprintf(buf, "predicted_out: %f | actual_out: %f | error: %f%%  | Inference Time: %lu us\r\n", predicted_out, actual_out, prediction_error, time_val);
+	  	buf_len = sprintf(buf, "\npredicted_out: %f | actual_out: %f | error: %f%%  | Inference Time: %lu us\r\n", predicted_out, actual_out, prediction_error, time_val);
 	  	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 
 	  	// toggel LED and wait a second
 	  	HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
-	  	HAL_Delay(1000);
+	  	HAL_Delay(2000);
 
     /* USER CODE END WHILE */
 

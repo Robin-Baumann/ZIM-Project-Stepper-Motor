@@ -95,7 +95,7 @@ static const int32_t TMC4361A_defaultRegisterSetting[TMC4361A_REGISTER_COUNT] =
  0x00006020,0x00000000,0x00000000,0x00000000,0x4440004C,0x00000003,0x00000000,0x00000400,0x00000000,0x00000000,0x00FB0C80,0x82029805,0x00000000,0x00000000,		    0,         0, // 0x00 - 0x0F
  0x00040001,0x00000000,0x01000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00FF00FF,0x00000000,0x00000000,0x00000280, // 0x10 - 0x1F
  0x00000001,0x00000000,	       0,	       0,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000, // 0x20 - 0x2F
- 0x00000000,0x00927C00,0x00000000,0x00000000,0x00000000,0x00000000,	        0,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000, // 0x30 - 0x3F
+ 0x00000000,0x007A1200,0x00000000,0x00000000,0x00000000,0x00000000,	        0,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000, // 0x30 - 0x3F
  0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000, // 0x40 - 0x4F
  0x00000000,	     0,	        0,0xFFFFFFFF,	      0,0x00000000,0x00A000A0,0x00F00000,0x00000190,0x00000000,	        0,	       0,0x00000000,	     0,0x00000000,0x00000000, // 0x50 - 0x5F
  0x00000000,0x00000000,0x00FFFFFF,0x00000000,	      0,	     0,	        0,0x00000000,0x00000000,0x00000000,	        0,	       0,	      0,	     0,	        0,	       0, // 0x60 - 0x6F
@@ -126,7 +126,7 @@ static void MX_TIM16_Init(void);
 void writeController(uint8_t adress, uint32_t datagram);
 void writeDriver(uint8_t adress, uint32_t datagram);
 
-uint32_t readController(uint8_t adress);
+int32_t readController(uint8_t adress);
 
 void setDefaultRegisterStateController(void);
 void setDefaultRegisterStateDriver(void);
@@ -209,11 +209,10 @@ int main(void)
 	HAL_Delay(1000);
 
 
-	// TEST SETUP
-
 	// setup for position mode without any ramp
 	writeController(TMC4361A_RAMPMODE, 0x00000004); // RAMPMODE= Position Mode / no Ramp
 	writeController(TMC4361A_VMAX, 0x00DFFFFF); // VMAX=100000
+
 
   /* USER CODE END 2 */
 
@@ -224,11 +223,20 @@ int main(void)
 	// toggel LED
 	HAL_GPIO_TogglePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin);
 
-	// do 2 revolutions and back continously
+	// do 2 revolutions and print position
 	writeController(TMC4361A_X_TARGET, 0x00019000);
 	HAL_Delay(3000);
+
+	buf_len = sprintf(buf, "\nPosition: %d \r\n", readController(TMC4361A_XACTUAL));
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
+	// go back 2 revolutions and print position again
 	writeController(TMC4361A_X_TARGET, 0x00000000);
 	HAL_Delay(3000);
+
+	buf_len = sprintf(buf, "\nPosition: %d \r\n", readController(TMC4361A_XACTUAL));
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
 
     /* USER CODE END WHILE */
 
@@ -309,7 +317,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -510,28 +518,43 @@ void writeDriver(uint8_t address, uint32_t datagram)
   HAL_Delay(1);
 }
 
-uint32_t readController(uint8_t address)
+int32_t readController(uint8_t address)
 {
-	// buffer variables
-	uint32_t t_datagram[5];
-	t_datagram[0] = address;
+	int value;
+	uint8_t data[5] = {0};
+	uint8_t r_data[5];
 
-	uint32_t r_datagram[5];
+	// clear write bit
+	address = TMC_ADDRESS(address);
 
+	// seet MSB to be adress
+	data[0] = address;
+
+	// send data to signal read access
 	HAL_GPIO_WritePin(SPI_CS_GPIO_Port, SPI_CS_Pin, GPIO_PIN_RESET);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &t_datagram[0], 1, 10);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &r_datagram[0], 1, 10);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &t_datagram[1], 1, 10);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &r_datagram[1], 1, 10);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &t_datagram[2], 1, 10);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &r_datagram[2], 1, 10);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &t_datagram[3], 1, 10);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &r_datagram[3], 1, 10);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &t_datagram[4], 1, 10);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &r_datagram[4], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &data[0], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &data[1], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &data[2], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &data[3], 1, 10);
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) &data[4], 1, 10);
 	HAL_GPIO_WritePin(SPI_CS_GPIO_Port, SPI_CS_Pin, GPIO_PIN_SET);
 
-	return ((uint32_t)r_datagram[0] << 24) | ((uint32_t)r_datagram[1] << 16) | (r_datagram[2] << 8) | r_datagram[3];
+	// read data send back after read acces has been signaled
+	HAL_GPIO_WritePin(SPI_CS_GPIO_Port, SPI_CS_Pin, GPIO_PIN_RESET);
+	HAL_SPI_Receive(&hspi1, (uint8_t*) &r_data[0], 1, 10);
+	HAL_SPI_Receive(&hspi1, (uint8_t*) &r_data[1], 1, 10);
+	HAL_SPI_Receive(&hspi1, (uint8_t*) &r_data[2], 1, 10);
+	HAL_SPI_Receive(&hspi1, (uint8_t*) &r_data[3], 1, 10);
+	HAL_SPI_Receive(&hspi1, (uint8_t*) &r_data[4], 1, 10);
+	HAL_GPIO_WritePin(SPI_CS_GPIO_Port, SPI_CS_Pin, GPIO_PIN_SET);
+
+
+	value = (((uint32_t)r_data[1]) << 24);
+	value |= (((uint32_t)r_data[2]) << 16);
+	value |= (((uint32_t)r_data[3]) << 8);
+	value |= ((uint32_t)r_data[3]);
+
+	return value;
 }
 
 
@@ -540,10 +563,7 @@ void setDefaultRegisterStateController(void)
 	for(uint8_t i=0; i<TMC4361A_REGISTER_COUNT; i++)
 	{
 		if(tmc4361A_defaultRegisterAccess[i] != 0x00 && tmc4361A_defaultRegisterAccess[i] != 0x01 && tmc4361A_defaultRegisterAccess[i] != 0x13)
-		{
 			writeController(i, TMC4361A_defaultRegisterSetting[i]);
-		}
-
 	}
 }
 
@@ -552,10 +572,7 @@ void setDefaultRegisterStateDriver(void)
 	for(uint8_t i=0; i<TMC2130_REGISTER_COUNT; i++)
 	{
 		if(tmc2130_defaultRegisterAccess[i] != 0x00 && tmc2130_defaultRegisterAccess[i] != 0x01 && tmc2130_defaultRegisterAccess[i] != 0x21)
-		{
 			writeDriver(i, TMC2130_defaultRegisterSetting[i]);
-		}
-
 	}
 }
 
