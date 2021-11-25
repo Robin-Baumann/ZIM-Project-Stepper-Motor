@@ -127,6 +127,7 @@ void writeController(uint8_t adress, uint32_t datagram);
 void writeDriver(uint8_t adress, uint32_t datagram);
 
 int32_t readController(uint8_t adress);
+int32_t readDriver(uint8_t address);
 
 void setDefaultRegisterStateController(void);
 void setDefaultRegisterStateDriver(void);
@@ -193,6 +194,15 @@ int main(void)
 	char buf[1000];
 	int buf_len = 0;
 
+	// current variables
+	uint32_t CUR_A;
+	uint32_t CUR_B;
+	uint32_t CS;
+	float V_FS;
+	float CUR_factor;
+	float current_a;
+	float current_b;
+
 
 	// software reset
 	HAL_Delay(100);
@@ -220,21 +230,21 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	// toggel LED
+	// toggel LED --
 	HAL_GPIO_TogglePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin);
 
-	// do 2 revolutions and print position
+	// do 2 revolutions and print position --
 	writeController(TMC4361A_X_TARGET, 0x00019000);
 	HAL_Delay(3000);
 
-	buf_len = sprintf(buf, "\nPosition: %d \r\n", readController(TMC4361A_XACTUAL));
+	buf_len = sprintf(buf, "\nPosition: %ld \r\n", readController(TMC4361A_XACTUAL));
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 
-	// go back 2 revolutions and print position again
+	// go back 2 revolutions and print position again --
 	writeController(TMC4361A_X_TARGET, 0x00000000);
 	HAL_Delay(3000);
 
-	buf_len = sprintf(buf, "\nPosition: %d \r\n", readController(TMC4361A_XACTUAL));
+	buf_len = sprintf(buf, "\nPosition: %ld \r\n", readController(TMC4361A_XACTUAL));
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 
 
@@ -524,11 +534,8 @@ int32_t readController(uint8_t address)
 	uint8_t data[5] = {0};
 	uint8_t r_data[5];
 
-	// clear write bit
-	address = TMC_ADDRESS(address);
-
-	// seet MSB to be adress
-	data[0] = address;
+	// seet MSB to be address
+	data[0] = TMC_ADDRESS(address);
 
 	// send data to signal read access
 	HAL_GPIO_WritePin(SPI_CS_GPIO_Port, SPI_CS_Pin, GPIO_PIN_RESET);
@@ -548,15 +555,27 @@ int32_t readController(uint8_t address)
 	HAL_SPI_Receive(&hspi1, (uint8_t*) &r_data[4], 1, 10);
 	HAL_GPIO_WritePin(SPI_CS_GPIO_Port, SPI_CS_Pin, GPIO_PIN_SET);
 
-
+	// Build Data from bits
 	value = (((uint32_t)r_data[1]) << 24);
 	value |= (((uint32_t)r_data[2]) << 16);
-	value |= (((uint32_t)r_data[3]) << 8);
-	value |= ((uint32_t)r_data[3]);
+	value |= ((r_data[3]) << 8);
+	value |= (r_data[4]);
 
 	return value;
 }
 
+int32_t readDriver(uint8_t address)
+{
+	// write adress so signal read access
+	writeController(TMC4361A_COVER_HIGH_WR, TMC_ADDRESS(address));
+	writeController(TMC4361A_COVER_LOW_WR, 0x00000000);
+	HAL_Delay(1);
+
+	// read value in controller Register
+	int value = readController(TMC4361A_COVER_DRV_LOW_RD);
+
+	return value;
+}
 
 void setDefaultRegisterStateController(void)
 {
