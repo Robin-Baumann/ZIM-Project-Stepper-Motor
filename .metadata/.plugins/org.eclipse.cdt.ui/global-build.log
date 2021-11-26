@@ -157,3 +157,380 @@ arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
   50408	    492	   2140	  53040	   cf30	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
 Finished building: default.size.stdout
  
+17:45:11 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DCORE_CM4 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/helpers" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ramp" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC4361A" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC2130" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM4\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin"
+   text	   data	    bss	    dec	    hex	filename
+  50280	    492	   2140	  52912	   ceb0	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list
+ 
+17:45:13 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+10:11:45 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DCORE_CM4 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/helpers" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ramp" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC4361A" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC2130" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM4\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin"
+   text	   data	    bss	    dec	    hex	filename
+  50200	    492	   2140	  52832	   ce60	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list
+ 
+10:11:50 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+10:13:47 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DCORE_CM4 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/helpers" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ramp" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC4361A" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC2130" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM4\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin"
+   text	   data	    bss	    dec	    hex	filename
+  50272	    492	   2140	  52904	   cea8	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list
+ 
+10:13:49 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+10:18:22 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DCORE_CM4 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/helpers" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ramp" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC4361A" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC2130" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM4\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin"
+   text	   data	    bss	    dec	    hex	filename
+  50224	    492	   2140	  52856	   ce78	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list
+ 
+10:18:26 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I../../Middlewares/ST/AI/Inc -I../X-CUBE-AI/App -Os -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf" @"objects.list"  -l:NetworkRuntime700_CM7_GCC.a -mcpu=cortex-m7 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.map" -Wl,--gc-sections -static -L../../Middlewares/ST/AI/Lib --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin"
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list
+ 
+10:19:34 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+   text	   data	    bss	    dec	    hex	filename
+  50224	    492	   2140	  52856	   ce78	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+10:19:35 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I../../Middlewares/ST/AI/Inc -I../X-CUBE-AI/App -Os -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf" @"objects.list"  -l:NetworkRuntime700_CM7_GCC.a -mcpu=cortex-m7 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.map" -Wl,--gc-sections -static -L../../Middlewares/ST/AI/Lib --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin"
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list
+ 
+10:20:04 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+   text	   data	    bss	    dec	    hex	filename
+  50224	    492	   2140	  52856	   ce78	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+10:20:05 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+10:35:11 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+   text	   data	    bss	    dec	    hex	filename
+  50224	    492	   2140	  52856	   ce78	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+10:35:12 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I../../Middlewares/ST/AI/Inc -I../X-CUBE-AI/App -Os -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf" @"objects.list"  -l:NetworkRuntime700_CM7_GCC.a -mcpu=cortex-m7 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.map" -Wl,--gc-sections -static -L../../Middlewares/ST/AI/Lib --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin"
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list
+ 
+10:35:27 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+   text	   data	    bss	    dec	    hex	filename
+  50224	    492	   2140	  52856	   ce78	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+10:46:42 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DCORE_CM4 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/helpers" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ramp" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC4361A" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC2130" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM4\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin"
+   text	   data	    bss	    dec	    hex	filename
+  50248	    492	   2140	  52880	   ce90	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list
+ 
+10:46:44 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+10:46:54 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+   text	   data	    bss	    dec	    hex	filename
+  50248	    492	   2140	  52880	   ce90	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+10:53:39 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DCORE_CM4 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/helpers" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ramp" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC4361A" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC2130" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM4\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin"
+   text	   data	    bss	    dec	    hex	filename
+  50256	    492	   2140	  52888	   ce98	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list
+ 
+10:53:42 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I../../Middlewares/ST/AI/Inc -I../X-CUBE-AI/App -Os -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf" @"objects.list"  -l:NetworkRuntime700_CM7_GCC.a -mcpu=cortex-m7 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.map" -Wl,--gc-sections -static -L../../Middlewares/ST/AI/Lib --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin"
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list
+ 
+10:55:35 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DCORE_CM4 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/helpers" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ramp" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC4361A" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC2130" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM4\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin"
+   text	   data	    bss	    dec	    hex	filename
+  50264	    492	   2140	  52896	   cea0	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list
+ 
+10:55:38 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+10:57:29 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DCORE_CM4 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/helpers" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ramp" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC4361A" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC2130" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM4\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin"
+   text	   data	    bss	    dec	    hex	filename
+  50264	    492	   2140	  52896	   cea0	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list
+ 
+10:57:31 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I../../Middlewares/ST/AI/Inc -I../X-CUBE-AI/App -Os -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf" @"objects.list"  -l:NetworkRuntime700_CM7_GCC.a -mcpu=cortex-m7 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.map" -Wl,--gc-sections -static -L../../Middlewares/ST/AI/Lib --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin"
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list
+ 
+10:57:59 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+   text	   data	    bss	    dec	    hex	filename
+  50264	    492	   2140	  52896	   cea0	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+10:58:01 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+10:58:31 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+   text	   data	    bss	    dec	    hex	filename
+  50264	    492	   2140	  52896	   cea0	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+10:58:32 **** Incremental Build of configuration Release for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I../../Middlewares/ST/AI/Inc -I../X-CUBE-AI/App -Os -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf" @"objects.list"  -l:NetworkRuntime700_CM7_GCC.a -mcpu=cortex-m7 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.map" -Wl,--gc-sections -static -L../../Middlewares/ST/AI/Lib --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin"
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list
+ 
+11:00:39 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DCORE_CM4 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/helpers" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ramp" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC4361A" -I"C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/STM32-Workspace-Steppermotor-Project/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/CM4/TMC-API/tmc/ic/TMC2130" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM4\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin"
+   text	   data	    bss	    dec	    hex	filename
+  50264	    492	   2140	  52896	   cea0	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.list
+ 
+11:00:41 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DCORE_CM7 -DUSE_HAL_DRIVER -DSTM32H745xx -c -I../Core/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc -I../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../../Drivers/CMSIS/Include -I../../Middlewares/ST/AI/Inc -I../X-CUBE-AI/App -Os -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-g++ -o "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf" @"objects.list"  -l:NetworkRuntime700_CM7_GCC.a -mcpu=cortex-m7 -T"C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\STM32-Workspace-Steppermotor-Project\NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.map" -Wl,--gc-sections -static -L../../Middlewares/ST/AI/Lib --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+ 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf 
+arm-none-eabi-objdump -h -S  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  > "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list"
+arm-none-eabi-objcopy  -O binary  NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf  "NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin"
+   text	   data	    bss	    dec	    hex	filename
+  53892	   2612	   3224	  59728	   e950	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.elf
+Finished building: default.size.stdout
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.bin
+ 
+Finished building: NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7.list
+ 
+11:00:52 **** Incremental Build of configuration Debug for project NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4 ****
+make -j8 all 
+arm-none-eabi-size   NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf 
+   text	   data	    bss	    dec	    hex	filename
+  50264	    492	   2140	  52896	   cea0	NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4.elf
+Finished building: default.size.stdout
+ 

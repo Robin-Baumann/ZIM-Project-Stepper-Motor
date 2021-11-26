@@ -199,7 +199,7 @@ int main(void)
 	uint32_t CUR_B;
 	uint32_t CS;
 	float V_FS;
-	float CUR_factor;
+	float current_factor;
 	float current_a;
 	float current_b;
 
@@ -214,13 +214,13 @@ int main(void)
 
 
 	// Say Hello
-	buf_len = sprintf(buf, "\nCortex M4 Hello\r\n\r\n");
+	buf_len = sprintf(buf, "\nCortex M4 Hello!\r\n");
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 	HAL_Delay(1000);
 
 
 	// setup for position mode without any ramp
-	writeController(TMC4361A_RAMPMODE, 0x00000004); // RAMPMODE= Position Mode / no Ramp
+	writeController(TMC4361A_RAMPMODE, 0x00000000); // RAMPMODE= Velocity Mode / no Ramp
 	writeController(TMC4361A_VMAX, 0x00DFFFFF); // VMAX=100000
 
 
@@ -230,22 +230,24 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	// toggel LED --
+	// calculate momentary motor current and print value
+	CUR_A = (readDriver(TMC2130_MSCURACT)&TMC2130_CUR_A_MASK)>>TMC2130_CUR_A_SHIFT;
+	CUR_B = (readDriver(TMC2130_MSCURACT)&TMC2130_CUR_B_MASK)>>TMC2130_CUR_B_SHIFT;
+	CS = (readDriver(TMC2130_DRV_STATUS)&TMC2130_CS_ACTUAL_MASK)>>TMC2130_CS_ACTUAL_SHIFT;
+	V_FS = ((readDriver(TMC2130_CHOPCONF)&TMC2130_VSENSE_MASK)>>TMC2130_VSENSE_SHIFT) ? 0.18 : 0.32;
+
+	current_factor = (((float)CS+1)/32)*((float)V_FS/(0.22+0.02))/248;
+
+	current_a = (float)CUR_A*current_factor;
+	current_b = (float)CUR_B*current_factor;
+
+	buf_len = sprintf(buf, "\nM4: curr_a %.3f A | curr_b %.3f A\r\n", current_a, current_b);
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
+
+	// toggel LED and wait a second
 	HAL_GPIO_TogglePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin);
-
-	// do 2 revolutions and print position --
-	writeController(TMC4361A_X_TARGET, 0x00019000);
-	HAL_Delay(3000);
-
-	buf_len = sprintf(buf, "\nPosition: %ld \r\n", readController(TMC4361A_XACTUAL));
-	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
-
-	// go back 2 revolutions and print position again --
-	writeController(TMC4361A_X_TARGET, 0x00000000);
-	HAL_Delay(3000);
-
-	buf_len = sprintf(buf, "\nPosition: %ld \r\n", readController(TMC4361A_XACTUAL));
-	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+	HAL_Delay(2000);
 
 
     /* USER CODE END WHILE */
