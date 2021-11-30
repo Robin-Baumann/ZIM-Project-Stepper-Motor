@@ -24,8 +24,8 @@
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.13176035" name="Floating-point ABI" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.hard" valueType="enumerated"/>
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board.537622225" name="Board" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board" useByScannerDiscovery="false" value="NUCLEO-H745ZI-Q" valueType="string"/>
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults.1565260278" name="Defaults" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults" useByScannerDiscovery="false" value="com.st.stm32cube.ide.common.services.build.inputs.revA.1.0.5 || Debug || true || Executable || com.st.stm32cube.ide.mcu.gnu.managedbuild.option.toolchain.value.workspace || NUCLEO-H745ZI-Q || 1 || 0 || arm-none-eabi- || ${gnu_tools_for_stm32_compiler_path} || ../../Drivers/CMSIS/Include | ../../Drivers/CMSIS/Device/ST/STM32H7xx/Include | ../Core/Inc | ../../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy | ../../Drivers/STM32H7xx_HAL_Driver/Inc ||  ||  || USE_HAL_DRIVER | CORE_CM4 | STM32H745xx ||  || Core/Src | Drivers | Core/Startup | Common ||  ||  || ${workspace_loc:/${ProjName}/STM32H745ZITX_FLASH.ld} || true || NonSecure ||  || secure_nsclib.o ||  || None || " valueType="string"/>
-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoprintffloat.1927618865" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoprintffloat" value="true" valueType="boolean"/>
-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoscanffloat.213016845" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoscanffloat" value="true" valueType="boolean"/>
+							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoprintffloat.1927618865" name="Use float with printf from newlib-nano (-u _printf_float)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoprintffloat" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoscanffloat.213016845" name="Use float with scanf from newlib-nano (-u _scanf_float)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoscanffloat" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform.929290414" isAbstract="false" osList="all" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform"/>
 							<builder buildPath="${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4}/Debug" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder.1395335172" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder"/>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.1202869119" name="MCU GCC Assembler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler">
@@ -40,6 +40,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/Common/Inc}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.906322450" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
 							</tool>
@@ -63,6 +64,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/Common/Inc}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1992326010" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -87,6 +89,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ramp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/Common/Inc}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp.1256098501" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp"/>
 							</tool>
@@ -152,6 +155,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/Common/Inc}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.1378306679" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
 							</tool>
@@ -175,6 +179,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC4361A}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/Common/Inc}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.2104884652" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -198,6 +203,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ramp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4/TMC-API/tmc/ic/TMC2130}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE/Common/Inc}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp.1608178590" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp"/>
 							</tool>

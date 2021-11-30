@@ -6,6 +6,7 @@
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="current"/>
 			<item value="readDriver"/>
 			<item value="TMC2130_VSENSE_MASK"/>
 			<item value="CUR_A"/>
@@ -13,7 +14,6 @@
 			<item value="773 3700"/>
 			<item value="xactual"/>
 			<item value="actual"/>
-			<item value="mask"/>
 		</list>
 		<list key="replacehistory">
 			<item value="t_datagram"/>

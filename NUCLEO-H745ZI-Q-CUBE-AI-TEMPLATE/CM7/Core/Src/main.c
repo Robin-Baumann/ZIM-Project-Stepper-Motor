@@ -29,6 +29,8 @@
 #include "stdlib.h"
 #include "time.h"
 
+#include "common.h"
+
 #include "sine_model.h"
 #include "sine_model_data.h"
 
@@ -90,6 +92,9 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
 
+volatile ringbuff_t* rb_cm4_to_cm7 = (void *)BUFF_CM4_TO_CM7_ADDR;
+volatile ringbuff_t* rb_cm7_to_cm4 = (void *)BUFF_CM7_TO_CM4_ADDR;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -116,6 +121,9 @@ static void MX_TIM17_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+
+  ringbuff_init(rb_cm7_to_cm4, (void *)BUFFDATA_CM7_TO_CM4_ADDR, BUFFDATA_CM7_TO_CM4_LEN);
+  ringbuff_init(rb_cm4_to_cm7, (void *)BUFFDATA_CM4_TO_CM7_ADDR, BUFFDATA_CM4_TO_CM7_LEN);
 
   /* USER CODE END 1 */
 /* USER CODE BEGIN Boot_Mode_Sequence_0 */
@@ -188,9 +196,13 @@ Error_Handler();
 	float INPUT_2_MEAN = 0;
 	float STEP_SIZE = 0.03145;
 
-	// buffer for uart text
+	// buffer for uart text and inter core communication
 	char buf[1000];
 	int buf_len = 0;
+
+	// variables for inter vor communication
+	size_t len;
+	char data_cm4[500];
 
 	// set timer variable and start timer
 	uint32_t time_stamp;
@@ -241,7 +253,8 @@ Error_Handler();
 	// Say Hello
 	buf_len = sprintf(buf, "\nCortex M7 Hello!\r\n");
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
-	HAL_Delay(1000);
+	HAL_Delay(2000);
+
 
   /* USER CODE END 2 */
 
@@ -291,6 +304,17 @@ Error_Handler();
 	  	// Print output of neural network
 	  	buf_len = sprintf(buf, "\nM7: pred_out %.3f | act_out %.3f | error %.3f%%  | time %lu us\r\n", predicted_out, actual_out, prediction_error, time_val);
 	  	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
+
+	  	// Check if M4 sent some data to M7 core
+		if ((len = ringbuff_get_linear_block_read_length(rb_cm4_to_cm7)) > 0)
+		{
+		  	ringbuff_read(rb_cm4_to_cm7, data_cm4, len);
+
+		  	HAL_UART_Transmit(&huart3, (uint8_t *) data_cm4, len, 100);
+
+		  	ringbuff_advance(rb_cm4_to_cm7,  len);
+		}
 
 	  	// toggel LED and wait a second
 	  	HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);

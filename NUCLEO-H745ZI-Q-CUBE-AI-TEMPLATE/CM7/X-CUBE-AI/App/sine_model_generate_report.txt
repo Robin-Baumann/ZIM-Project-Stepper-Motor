@@ -1,13 +1,13 @@
 Neural Network Tools for STM32AI v1.5.1 (STM.ai v7.0.0-RC8)
-Created date          : 2021-11-25 11:28:42
-Parameters            : generate --name sine_model -m C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/Tensorflow Notebooks/Time Series ANN/models/time_series_model_ann_quant.tflite --type tflite --compression 1 --verbosity 1 --workspace C:\Users\robin\AppData\Local\Temp\mxAI_workspace73722643142700016461242409817103619 --output C:\Users\robin\.stm32cubemx
+Created date          : 2021-11-26 17:31:32
+Parameters            : generate --name sine_model -m C:/Users/robin/OneDrive/Hochschule/Master/Masterarbeit/Programme/Tensorflow Notebooks/Time Series ANN/models/time_series_model_ann_quant.tflite --type tflite --compression 1 --verbosity 1 --workspace C:\Users\robin\AppData\Local\Temp\mxAI_workspace84540448170410013404611531519302505 --output C:\Users\robin\.stm32cubemx
 
 Exec/report summary (generate)
 ------------------------------------------------------------------------------------------------------------------------
 model file            : C:\Users\robin\OneDrive\Hochschule\Master\Masterarbeit\Programme\Tensorflow Notebooks\Time Series ANN\models\time_series_model_ann_quant.tflite
 type                  : tflite
 c_name                : sine_model
-workspace dir         : C:\Users\robin\AppData\Local\Temp\mxAI_workspace73722643142700016461242409817103619
+workspace dir         : C:\Users\robin\AppData\Local\Temp\mxAI_workspace84540448170410013404611531519302505
 output dir            : C:\Users\robin\.stm32cubemx
 
 model_name            : time_series_model_ann_quant

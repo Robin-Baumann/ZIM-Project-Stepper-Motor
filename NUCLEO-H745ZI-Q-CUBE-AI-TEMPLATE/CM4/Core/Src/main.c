@@ -29,6 +29,8 @@
 #include "stdlib.h"
 #include "time.h"
 
+#include "common.h"
+
 #include "TMC4361A.h"
 #include "TMC2130.h"
 
@@ -88,6 +90,9 @@ TIM_HandleTypeDef htim16;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
+
+volatile ringbuff_t* rb_cm4_to_cm7 = (void *)BUFF_CM4_TO_CM7_ADDR;
+volatile ringbuff_t* rb_cm7_to_cm4 = (void *)BUFF_CM7_TO_CM4_ADDR;
 
 static const int32_t TMC4361A_defaultRegisterSetting[TMC4361A_REGISTER_COUNT] =
 {
@@ -183,6 +188,8 @@ int main(void)
   MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
+  while (!ringbuff_is_ready(rb_cm4_to_cm7) || !ringbuff_is_ready(rb_cm7_to_cm4)) {}
+
 	// Start PWM pin (CLK16)
 	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
 
@@ -241,8 +248,10 @@ int main(void)
 	current_a = (float)CUR_A*current_factor;
 	current_b = (float)CUR_B*current_factor;
 
+
+	// send data to M7
 	buf_len = sprintf(buf, "\nM4: curr_a %.3f A | curr_b %.3f A\r\n", current_a, current_b);
-	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+	ringbuff_write(rb_cm4_to_cm7, buf, buf_len);
 
 
 	// toggel LED and wait a second
