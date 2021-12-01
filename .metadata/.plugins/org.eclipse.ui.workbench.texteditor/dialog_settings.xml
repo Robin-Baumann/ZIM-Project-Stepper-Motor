@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="readDriver"/>
+		<item key="selection" value="ringbuff"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="ringbuff_init"/>
+			<item value="ringbuff"/>
+			<item value="ringbuff_skip"/>
+			<item value="ringbuff_advance"/>
+			<item value="writeCM7"/>
 			<item value="current"/>
 			<item value="readDriver"/>
 			<item value="TMC2130_VSENSE_MASK"/>
-			<item value="CUR_A"/>
-			<item value="USER CODE BEGIN PD "/>
-			<item value="773 3700"/>
-			<item value="xactual"/>
-			<item value="actual"/>
 		</list>
 		<list key="replacehistory">
 			<item value="t_datagram"/>

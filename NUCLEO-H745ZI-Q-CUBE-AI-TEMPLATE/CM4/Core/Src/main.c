@@ -19,7 +19,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -28,8 +27,6 @@
 #include "string.h"
 #include "stdlib.h"
 #include "time.h"
-
-#include "common.h"
 
 #include "TMC4361A.h"
 #include "TMC2130.h"
@@ -56,32 +53,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-#if defined ( __ICCARM__ ) /*!< IAR Compiler */
-
-#pragma location=0x30040000
-ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-#pragma location=0x30040060
-ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
-#pragma location=0x30040200
-uint8_t Rx_Buff[ETH_RX_DESC_CNT][ETH_MAX_PACKET_SIZE]; /* Ethernet Receive Buffers */
-
-#elif defined ( __CC_ARM )  /* MDK ARM Compiler */
-
-__attribute__((at(0x30040000))) ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-__attribute__((at(0x30040060))) ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
-__attribute__((at(0x30040200))) uint8_t Rx_Buff[ETH_RX_DESC_CNT][ETH_MAX_PACKET_SIZE]; /* Ethernet Receive Buffer */
-
-#elif defined ( __GNUC__ ) /* GNU Compiler */
-
-ETH_DMADescTypeDef DMARxDscrTab[ETH_RX_DESC_CNT] __attribute__((section(".RxDecripSection"))); /* Ethernet Rx DMA Descriptors */
-ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section(".TxDecripSection")));   /* Ethernet Tx DMA Descriptors */
-uint8_t Rx_Buff[ETH_RX_DESC_CNT][ETH_MAX_PACKET_SIZE] __attribute__((section(".RxArraySection"))); /* Ethernet Receive Buffers */
-
-#endif
-
-ETH_TxPacketConfig TxConfig;
-
-ETH_HandleTypeDef heth;
+ADC_HandleTypeDef hadc1;
 
 SPI_HandleTypeDef hspi1;
 
@@ -90,9 +62,6 @@ TIM_HandleTypeDef htim16;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
-
-volatile ringbuff_t* rb_cm4_to_cm7 = (void *)BUFF_CM4_TO_CM7_ADDR;
-volatile ringbuff_t* rb_cm7_to_cm4 = (void *)BUFF_CM7_TO_CM4_ADDR;
 
 static const int32_t TMC4361A_defaultRegisterSetting[TMC4361A_REGISTER_COUNT] =
 {
@@ -126,6 +95,7 @@ static const int32_t TMC2130_defaultRegisterSetting[TMC2130_REGISTER_COUNT] =
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM16_Init(void);
+static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
 
 void writeController(uint8_t adress, uint32_t datagram);
@@ -186,9 +156,8 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   MX_TIM16_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-
-  while (!ringbuff_is_ready(rb_cm4_to_cm7) || !ringbuff_is_ready(rb_cm7_to_cm4)) {}
 
 	// Start PWM pin (CLK16)
 	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
@@ -198,7 +167,7 @@ int main(void)
 
 	// Inint and buffer for uart text
 	MX_USART3_UART_Init();
-	char buf[1000];
+	char buf[500];
 	int buf_len = 0;
 
 	// current variables
@@ -220,7 +189,7 @@ int main(void)
 	setDefaultRegisterStateDriver();
 
 
-	// Say Hello
+	// say hello
 	buf_len = sprintf(buf, "\nCortex M4 Hello!\r\n");
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 	HAL_Delay(1000);
@@ -248,15 +217,14 @@ int main(void)
 	current_a = (float)CUR_A*current_factor;
 	current_b = (float)CUR_B*current_factor;
 
-
-	// send data to M7
+	// print data
 	buf_len = sprintf(buf, "\nM4: curr_a %.3f A | curr_b %.3f A\r\n", current_a, current_b);
-	ringbuff_write(rb_cm4_to_cm7, buf, buf_len);
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 
 
 	// toggel LED and wait a second
 	HAL_GPIO_TogglePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin);
-	HAL_Delay(2000);
+	HAL_Delay(1000);
 
 
     /* USER CODE END WHILE */
@@ -267,51 +235,67 @@ int main(void)
 }
 
 /**
-  * @brief ETH Initialization Function
+  * @brief ADC1 Initialization Function
   * @param None
   * @retval None
   */
-void MX_ETH_Init(void)
+static void MX_ADC1_Init(void)
 {
 
-  /* USER CODE BEGIN ETH_Init 0 */
+  /* USER CODE BEGIN ADC1_Init 0 */
 
-  /* USER CODE END ETH_Init 0 */
+  /* USER CODE END ADC1_Init 0 */
 
-   static uint8_t MACAddr[6];
+  ADC_MultiModeTypeDef multimode = {0};
+  ADC_ChannelConfTypeDef sConfig = {0};
 
-  /* USER CODE BEGIN ETH_Init 1 */
+  /* USER CODE BEGIN ADC1_Init 1 */
 
-  /* USER CODE END ETH_Init 1 */
-  heth.Instance = ETH;
-  MACAddr[0] = 0x00;
-  MACAddr[1] = 0x80;
-  MACAddr[2] = 0xE1;
-  MACAddr[3] = 0x00;
-  MACAddr[4] = 0x00;
-  MACAddr[5] = 0x00;
-  heth.Init.MACAddr = &MACAddr[0];
-  heth.Init.MediaInterface = HAL_ETH_RMII_MODE;
-  heth.Init.TxDesc = DMATxDscrTab;
-  heth.Init.RxDesc = DMARxDscrTab;
-  heth.Init.RxBuffLen = 1524;
-
-  /* USER CODE BEGIN MACADDRESS */
-
-  /* USER CODE END MACADDRESS */
-
-  if (HAL_ETH_Init(&heth) != HAL_OK)
+  /* USER CODE END ADC1_Init 1 */
+  /** Common config
+  */
+  hadc1.Instance = ADC1;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
+  hadc1.Init.Resolution = ADC_RESOLUTION_16B;
+  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc1.Init.LowPowerAutoWait = DISABLE;
+  hadc1.Init.ContinuousConvMode = DISABLE;
+  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.DiscontinuousConvMode = DISABLE;
+  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc1.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DR;
+  hadc1.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+  hadc1.Init.LeftBitShift = ADC_LEFTBITSHIFT_NONE;
+  hadc1.Init.OversamplingMode = DISABLE;
+  if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
   }
+  /** Configure the ADC multi-mode
+  */
+  multimode.Mode = ADC_MODE_INDEPENDENT;
+  if (HAL_ADCEx_MultiModeConfigChannel(&hadc1, &multimode) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_4;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  sConfig.SingleDiff = ADC_DIFFERENTIAL_ENDED;
+  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+  sConfig.Offset = 0;
+  sConfig.OffsetSignedSaturation = DISABLE;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC1_Init 2 */
 
-  memset(&TxConfig, 0 , sizeof(ETH_TxPacketConfig));
-  TxConfig.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
-  TxConfig.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
-  TxConfig.CRCPadCtrl = ETH_CRC_PAD_INSERT;
-  /* USER CODE BEGIN ETH_Init 2 */
-
-  /* USER CODE END ETH_Init 2 */
+  /* USER CODE END ADC1_Init 2 */
 
 }
 
@@ -486,6 +470,7 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
