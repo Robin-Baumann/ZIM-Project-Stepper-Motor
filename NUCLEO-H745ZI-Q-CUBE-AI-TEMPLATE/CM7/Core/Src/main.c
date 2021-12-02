@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -61,7 +62,61 @@ UART_HandleTypeDef huart3;
 
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for BlinkGreenLED */
+osThreadId_t BlinkGreenLEDHandle;
+const osThreadAttr_t BlinkGreenLED_attributes = {
+  .name = "BlinkGreenLED",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
 /* USER CODE BEGIN PV */
+
+// Model Ranges
+float VALUES_RANGE = 2;
+float VALUES_MEAN = 0;
+float INPUT_1_RANGE = 3.125;
+float INPUT_1_MEAN = 1.001;
+float INPUT_2_RANGE = 0.77;
+float INPUT_2_MEAN = 0;
+float STEP_SIZE = 0.03145;
+
+// buffer for uart text and inter core communication
+char buf[1000];
+int buf_len = 0;
+
+// set timer variable and start timer
+uint32_t time_stamp;
+uint32_t time_stamp_last;
+uint32_t time_val;
+
+// IO variables
+int idx = 0;
+float time_model;
+float predicted_out;
+float actual_out;
+float prediction_error;
+float in[AI_SINE_MODEL_IN_1_HEIGHT][AI_SINE_MODEL_IN_1_CHANNEL];
+
+// Pointer to the model
+static ai_handle sine_model = AI_HANDLE_NULL;
+
+// Chunk of memory used to hold intermediate values for neural network
+ai_u8 activations[AI_SINE_MODEL_DATA_ACTIVATIONS_SIZE];
+
+// Buffers used to store input and output tensors
+ai_float in_data[AI_SINE_MODEL_IN_1_HEIGHT][AI_SINE_MODEL_IN_1_CHANNEL];;
+ai_float out_data[AI_SINE_MODEL_OUT_1_SIZE_BYTES];
+
+// Initialize wrapper structs that hold pointers to data and info about the data (tensor height, width, channels)
+ai_buffer ai_input[] = AI_SINE_MODEL_IN;
+ai_buffer ai_output[] = AI_SINE_MODEL_OUT;
 
 /* USER CODE END PV */
 
@@ -72,12 +127,16 @@ static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_CRC_Init(void);
 static void MX_TIM17_Init(void);
+void StartDefaultTask(void *argument);
+void StartBlinkGreenLED(void *argument);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 
 /* USER CODE END 0 */
 
@@ -150,126 +209,75 @@ Error_Handler();
   MX_TIM17_Init();
   /* USER CODE BEGIN 2 */
 
-	// Model Ranges
-	float VALUES_RANGE = 2;
-	float VALUES_MEAN = 0;
-	float INPUT_1_RANGE = 3.125;
-	float INPUT_1_MEAN = 1.001;
-	float INPUT_2_RANGE = 0.77;
-	float INPUT_2_MEAN = 0;
-	float STEP_SIZE = 0.03145;
-
-	// buffer for uart text and inter core communication
-	char buf[1000];
-	int buf_len = 0;
-
-	// set timer variable and start timer
-	uint32_t time_stamp;
-	uint32_t time_stamp_last;
-	uint32_t time_val;
+	/* start timer */
 	HAL_TIM_Base_Start(&htim17);
 
-	// IO variables
-	int idx = 0;
-	float time;
-	float predicted_out;
-	float actual_out;
-	float prediction_error;
-	float in[AI_SINE_MODEL_IN_1_HEIGHT][AI_SINE_MODEL_IN_1_CHANNEL];
 
-	// Pointer to the model
-	static ai_handle sine_model = AI_HANDLE_NULL;
-
-	// Chunk of memory used to hold intermediate values for neural network
-	ai_u8 activations[AI_SINE_MODEL_DATA_ACTIVATIONS_SIZE];
-
-	// Buffers used to store input and output tensors
-	ai_float in_data[AI_SINE_MODEL_IN_1_HEIGHT][AI_SINE_MODEL_IN_1_CHANNEL];;
-	ai_float out_data[AI_SINE_MODEL_OUT_1_SIZE_BYTES];
-
-	// Initialize wrapper structs that hold pointers to data and info about the data (tensor height, width, channels)
-	ai_buffer ai_input[] = AI_SINE_MODEL_IN;
-	ai_buffer ai_output[] = AI_SINE_MODEL_OUT;
-
+	/* init neural network */
 	// Set pointers wrapper structs to our data buffers
 	ai_input[0].n_batches = 1;
 	ai_input[0].data = AI_HANDLE_PTR(in_data);
 	ai_output[0].n_batches = 1;
 	ai_output[0].data = AI_HANDLE_PTR(out_data);
-
 	// Set working memory and get weights/biases from model
 	ai_network_params ai_params = {AI_NETWORK_PARAMS_INIT(
-			AI_SINE_MODEL_DATA_WEIGHTS(ai_sine_model_data_weights_get()),
-			AI_SINE_MODEL_DATA_ACTIVATIONS(activations))};
-
+		AI_SINE_MODEL_DATA_WEIGHTS(ai_sine_model_data_weights_get()),
+		AI_SINE_MODEL_DATA_ACTIVATIONS(activations))};
 	// Create instance of neural network
 	ai_sine_model_create(&sine_model, AI_SINE_MODEL_DATA_CONFIG);
-
 	// Initialize neural network
 	ai_sine_model_init(sine_model, &ai_params);
 
 
-	// Say Hello
+	/* Say Hello */
 	buf_len = sprintf(buf, "\nCortex M7 Hello!\r\n");
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 	HAL_Delay(2000);
 
-
   /* USER CODE END 2 */
 
+  /* Init scheduler */
+  osKernelInitialize();
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
+
+  /* Create the thread(s) */
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+
+  /* creation of BlinkGreenLED */
+  BlinkGreenLEDHandle = osThreadNew(StartBlinkGreenLED, NULL, &BlinkGreenLED_attributes);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+  /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_EVENTS */
+  /* add events, ... */
+  /* USER CODE END RTOS_EVENTS */
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		// Calculate input
-		idx ++;
-		for (uint32_t i = 0; i < AI_SINE_MODEL_IN_1_HEIGHT; i++)
-		{
-		  time = (i+idx)*STEP_SIZE;
-		  in[i][0] = sin(time)+2*pow(cos(time),2);
-		  in[i][1] = pow(sin(time),2)*cos(time);
-
-		  in[i][0] = (in[i][0]-INPUT_1_MEAN)/INPUT_1_RANGE;
-		  in[i][1] = (in[i][1]-INPUT_2_MEAN)/INPUT_2_RANGE;
-		}
-		actual_out = sin((AI_SINE_MODEL_IN_1_HEIGHT+idx)*STEP_SIZE);
-
-
-		// fill input buffer
-	  	for (uint32_t i = 0; i < AI_SINE_MODEL_IN_1_HEIGHT; i++)
-	  	{
-	  		for (uint32_t j = 0; j < AI_SINE_MODEL_IN_1_CHANNEL; j++)
-	  		{
-	  			in_data[i][j] = (ai_float)in[i][j];
-	  		}
-	  	}
-
-	  	// Get current timestamp
-	  	time_stamp_last = __HAL_TIM_GET_COUNTER(&htim17);
-
-	  	//perforem inference and get output
-	  	ai_sine_model_run(sine_model, &ai_input[0], &ai_output[0]);
-	  	predicted_out = ((float *)out_data)[0];
-	  	predicted_out = (predicted_out*VALUES_RANGE)+VALUES_MEAN;
-
-	  	// calculate inference time in micro seconds
-	  	time_stamp = __HAL_TIM_GET_COUNTER(&htim17);
-	  	time_val = (time_stamp_last>time_stamp) ? htim17.Init.Period-time_stamp_last+time_stamp : time_stamp-time_stamp_last;
-
-		// calculate error
-	  	prediction_error = (predicted_out-actual_out)/VALUES_RANGE*100;
-	  	prediction_error = (prediction_error < 0) ? prediction_error*(-1) : prediction_error;
-
-	  	// Print output of neural network
-	  	buf_len = sprintf(buf, "\nM7: pred_out %.3f | act_out %.3f | error %.3f%%  | time %lu us\r\n", predicted_out, actual_out, prediction_error, time_val);
-	  	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
-
-
-	  	// toggel LED and wait a second
-	  	HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
-	  	HAL_Delay(1000);
-
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -513,6 +521,107 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN 5 */
+  /* Infinite loop */
+  for(;;)
+  {
+	// Calculate input
+	idx ++;
+	for (uint32_t i = 0; i < AI_SINE_MODEL_IN_1_HEIGHT; i++)
+	{
+	  time_model = (i+idx)*STEP_SIZE;
+	  in[i][0] = sin(time_model)+2*pow(cos(time_model),2);
+	  in[i][1] = pow(sin(time_model),2)*cos(time_model);
+
+	  in[i][0] = (in[i][0]-INPUT_1_MEAN)/INPUT_1_RANGE;
+	  in[i][1] = (in[i][1]-INPUT_2_MEAN)/INPUT_2_RANGE;
+	}
+	actual_out = sin((AI_SINE_MODEL_IN_1_HEIGHT+idx)*STEP_SIZE);
+
+
+	// fill input buffer
+	for (uint32_t i = 0; i < AI_SINE_MODEL_IN_1_HEIGHT; i++)
+	{
+		for (uint32_t j = 0; j < AI_SINE_MODEL_IN_1_CHANNEL; j++)
+		{
+			in_data[i][j] = (ai_float)in[i][j];
+		}
+	}
+
+	// Get current timestamp
+	time_stamp_last = __HAL_TIM_GET_COUNTER(&htim17);
+
+	//perforem inference and get output
+	ai_sine_model_run(sine_model, &ai_input[0], &ai_output[0]);
+	predicted_out = ((float *)out_data)[0];
+	predicted_out = (predicted_out*VALUES_RANGE)+VALUES_MEAN;
+
+	// calculate inference time_model in micro seconds
+	time_stamp = __HAL_TIM_GET_COUNTER(&htim17);
+	time_val = (time_stamp_last>time_stamp) ? htim17.Init.Period-time_stamp_last+time_stamp : time_stamp-time_stamp_last;
+
+	// calculate error
+	prediction_error = (predicted_out-actual_out)/VALUES_RANGE*100;
+	prediction_error = (prediction_error < 0) ? prediction_error*(-1) : prediction_error;
+
+	// Print output of neural network
+	buf_len = sprintf(buf, "\nM7: pred_out %.3f | act_out %.3f | error %.3f%%  | time_model %lu us\r\n", predicted_out, actual_out, prediction_error, time_val);
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+	osDelay(1000);
+  }
+  /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_StartBlinkGreenLED */
+/**
+* @brief Function implementing the BlinkGreenLED thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartBlinkGreenLED */
+void StartBlinkGreenLED(void *argument)
+{
+  /* USER CODE BEGIN StartBlinkGreenLED */
+  /* Infinite loop */
+  for(;;)
+  {
+	// toggel LED and wait a second
+	HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+    osDelay(1000);
+  }
+  /* USER CODE END StartBlinkGreenLED */
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM13 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM13) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.

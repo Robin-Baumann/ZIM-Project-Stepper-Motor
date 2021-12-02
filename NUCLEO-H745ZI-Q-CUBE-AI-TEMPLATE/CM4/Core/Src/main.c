@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -30,6 +31,8 @@
 
 #include "TMC4361A.h"
 #include "TMC2130.h"
+
+#include "TMCRegisterSettings.h"
 
 /* USER CODE END Includes */
 
@@ -61,33 +64,34 @@ TIM_HandleTypeDef htim16;
 
 UART_HandleTypeDef huart3;
 
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for BlinkYelowLED */
+osThreadId_t BlinkYelowLEDHandle;
+const osThreadAttr_t BlinkYelowLED_attributes = {
+  .name = "BlinkYelowLED",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
 /* USER CODE BEGIN PV */
 
-static const int32_t TMC4361A_defaultRegisterSetting[TMC4361A_REGISTER_COUNT] =
-{
-//		  0,   		 1,   		2,   	   3,   	  4,   		 5,   		6,   	   7,   	  8,   		 9,   		A,   	   B,   	  C,   		 D,   		E,   	   F
- 0x00006020,0x00000000,0x00000000,0x00000000,0x4440004C,0x00000003,0x00000000,0x00000400,0x00000000,0x00000000,0x00FB0C80,0x82029805,0x00000000,0x00000000,		    0,         0, // 0x00 - 0x0F
- 0x00040001,0x00000000,0x01000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00FF00FF,0x00000000,0x00000000,0x00000280, // 0x10 - 0x1F
- 0x00000001,0x00000000,	       0,	       0,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000, // 0x20 - 0x2F
- 0x00000000,0x007A1200,0x00000000,0x00000000,0x00000000,0x00000000,	        0,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000, // 0x30 - 0x3F
- 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000, // 0x40 - 0x4F
- 0x00000000,	     0,	        0,0xFFFFFFFF,	      0,0x00000000,0x00A000A0,0x00F00000,0x00000190,0x00000000,	        0,	       0,0x00000000,	     0,0x00000000,0x00000000, // 0x50 - 0x5F
- 0x00000000,0x00000000,0x00FFFFFF,0x00000000,	      0,	     0,	        0,0x00000000,0x00000000,0x00000000,	        0,	       0,	      0,	     0,	        0,	       0, // 0x60 - 0x6F
- 0xAAAAB554,0x4A9554AA,0x24492929,0x10104222,0xFBFFFFFF,0xB5BB777D,0x49295556,0x00404222,0xFFFF8056,	     0,	        0,	       0,	      0,0x00000000,0x00F70000,	       0  // 0x70 - 0x7F
-};
+// buffer for uart text
+char buf[500];
+int buf_len = 0;
 
-static const int32_t TMC2130_defaultRegisterSetting[TMC2130_REGISTER_COUNT] =
-{
-//		  0,   		 1,   		2,   	   3,   	  4,   		 5,   		6,   	   7,   	  8,   		 9,   		A,   	   B,   	  C,   		 D,   		E,   	   F
- 0x00000000,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,		    0,         0, // 0x00 - 0x0F
- 0x00071703,0x00000000,         0,0x00000000,0x00000000,0x00000000,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0, // 0x10 - 0x1F
-          0,         0,	        0,	       0,         0,         0,         0,         0,         0,         0,         0,         0,         0,0x00000000,         0,         0, // 0x20 - 0x2F
-          0,         0,         0,0x00000000,         0,         0,	        0,         0,         0,         0,         0,         0,         0,         0,         0,         0, // 0x30 - 0x3F
-          0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0, // 0x40 - 0x4F
-          0,	     0,	        0,         0,	      0,         0,         0,         0,         0,         0,	        0,	       0,         0,	     0,         0,         0, // 0x50 - 0x5F
- 0xAAAAB554,0x4A9554AA,0x24492929,0x10104222,0xFBFFFFFF,0xB5BB777D,0x49295556,0x00404222,0xFFFF8056,0x00F70000,	        0,	       0,0x000101D5,0x00000000,0x00000000,	       0, // 0x60 - 0x6F
- 0x000504C8,         0,0x00000000,         0,         0,         0,         0,         0,         0,	     0,	        0,	       0,	      0,         0,         0,	       0  // 0x70 - 0x7F
-};
+// current variables
+uint32_t CUR_A;
+uint32_t CUR_B;
+uint32_t CS;
+float V_FS;
+float current_factor;
+float current_a;
+float current_b;
 
 /* USER CODE END PV */
 
@@ -96,6 +100,9 @@ static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM16_Init(void);
 static void MX_ADC1_Init(void);
+void StartDefaultTask(void *argument);
+void StartBlinkYelowLED(void *argument);
+
 /* USER CODE BEGIN PFP */
 
 void writeController(uint8_t adress, uint32_t datagram);
@@ -159,74 +166,77 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
-	// Start PWM pin (CLK16)
+	/* Init UART */
+	MX_USART3_UART_Init();
+
+  	/* Start PWM pin (CLK16) */
 	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
 
-	// Enable SPI
+	/* Enable SPI */
 	__HAL_SPI_ENABLE(&hspi1);
 
-	// Inint and buffer for uart text
-	MX_USART3_UART_Init();
-	char buf[500];
-	int buf_len = 0;
 
-	// current variables
-	uint32_t CUR_A;
-	uint32_t CUR_B;
-	uint32_t CS;
-	float V_FS;
-	float current_factor;
-	float current_a;
-	float current_b;
-
-
-	// software reset
-	HAL_Delay(100);
+	/* Reset controller and driver and write default register values */
 	writeController(TMC4361A_RESET_REG,0x52535400);
-
-	// set default register settings
 	setDefaultRegisterStateController();
 	setDefaultRegisterStateDriver();
 
 
-	// say hello
+	/* say hello */
 	buf_len = sprintf(buf, "\nCortex M4 Hello!\r\n");
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 	HAL_Delay(1000);
 
 
-	// setup for position mode without any ramp
+	/* setup for velocity mode without any ramp */
 	writeController(TMC4361A_RAMPMODE, 0x00000000); // RAMPMODE= Velocity Mode / no Ramp
 	writeController(TMC4361A_VMAX, 0x00DFFFFF); // VMAX=100000
 
 
   /* USER CODE END 2 */
 
+  /* Init scheduler */
+  osKernelInitialize();
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
+
+  /* Create the thread(s) */
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+
+  /* creation of BlinkYelowLED */
+  BlinkYelowLEDHandle = osThreadNew(StartBlinkYelowLED, NULL, &BlinkYelowLED_attributes);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+  /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_EVENTS */
+  /* add events, ... */
+  /* USER CODE END RTOS_EVENTS */
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	// calculate momentary motor current and print value
-	CUR_A = (readDriver(TMC2130_MSCURACT)&TMC2130_CUR_A_MASK)>>TMC2130_CUR_A_SHIFT;
-	CUR_B = (readDriver(TMC2130_MSCURACT)&TMC2130_CUR_B_MASK)>>TMC2130_CUR_B_SHIFT;
-	CS = (readDriver(TMC2130_DRV_STATUS)&TMC2130_CS_ACTUAL_MASK)>>TMC2130_CS_ACTUAL_SHIFT;
-	V_FS = ((readDriver(TMC2130_CHOPCONF)&TMC2130_VSENSE_MASK)>>TMC2130_VSENSE_SHIFT) ? 0.18 : 0.32;
-
-	current_factor = (((float)CS+1)/32)*((float)V_FS/(0.22+0.02))/248;
-
-	current_a = (float)CUR_A*current_factor;
-	current_b = (float)CUR_B*current_factor;
-
-	// print data
-	buf_len = sprintf(buf, "\nM4: curr_a %.3f A | curr_b %.3f A\r\n", current_a, current_b);
-	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
-
-
-	// toggel LED and wait a second
-	HAL_GPIO_TogglePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin);
-	HAL_Delay(1000);
-
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -592,6 +602,83 @@ void setDefaultRegisterStateDriver(void)
 }
 
 /* USER CODE END 4 */
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN 5 */
+  /* Infinite loop */
+  for(;;)
+  {
+	// calculate momentary motor current and print value
+	CUR_A = (readDriver(TMC2130_MSCURACT)&TMC2130_CUR_A_MASK)>>TMC2130_CUR_A_SHIFT;
+	CUR_B = (readDriver(TMC2130_MSCURACT)&TMC2130_CUR_B_MASK)>>TMC2130_CUR_B_SHIFT;
+	CS = (readDriver(TMC2130_DRV_STATUS)&TMC2130_CS_ACTUAL_MASK)>>TMC2130_CS_ACTUAL_SHIFT;
+	V_FS = ((readDriver(TMC2130_CHOPCONF)&TMC2130_VSENSE_MASK)>>TMC2130_VSENSE_SHIFT) ? 0.18 : 0.32;
+
+	current_factor = (((float)CS+1)/32)*((float)V_FS/(0.22+0.02))/248;
+
+	current_a = (float)CUR_A*current_factor;
+	current_b = (float)CUR_B*current_factor;
+
+	// print data
+	buf_len = sprintf(buf, "\nM4: curr_a %.3f A | curr_b %.3f A\r\n", current_a, current_b);
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+	osDelay(1000);
+  }
+
+	buf_len = sprintf(buf, "\nTEST2\r\n");
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
+  /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_StartBlinkYelowLED */
+/**
+* @brief Function implementing the BlinkYelowLED thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartBlinkYelowLED */
+void StartBlinkYelowLED(void *argument)
+{
+  /* USER CODE BEGIN StartBlinkYelowLED */
+  /* Infinite loop */
+  for(;;)
+  {
+	// toggel LED and wait a second
+	HAL_GPIO_TogglePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin);
+    osDelay(1000);
+  }
+  /* USER CODE END StartBlinkYelowLED */
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM14 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM14) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.

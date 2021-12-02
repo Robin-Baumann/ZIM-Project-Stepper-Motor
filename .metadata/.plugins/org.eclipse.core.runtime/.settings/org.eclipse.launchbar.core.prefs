@@ -10,6 +10,7 @@ org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:NUCLEO-H745ZI-Q-CUBE-AI-RNN-TES
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:NUCLEO-H745ZI-Q-CUBE-AI-RNN-TEST\ Release/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:NUCLEO-H745ZI-Q-CUBE-AI-RNN-TEST_CM4\ Debug/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\ Release/activeLaunchMode=run
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE\ Release/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4\ Debug/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM4\ Debug/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:NUCLEO-H745ZI-Q-CUBE-AI-TEMPLATE_CM7\ Release/activeLaunchMode=run
