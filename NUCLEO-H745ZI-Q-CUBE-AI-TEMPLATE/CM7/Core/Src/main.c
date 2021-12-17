@@ -35,6 +35,7 @@
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
+typedef StaticTask_t osStaticThreadDef_t;
 /* USER CODE BEGIN PTD */
 
 /* USER CODE END PTD */
@@ -45,6 +46,17 @@
 #ifndef HSEM_ID_0
 #define HSEM_ID_0 (0U) /* HW semaphore 0*/
 #endif
+
+#ifndef HSEM_current_read
+#define HSEM_current_read (1U) /* HW semaphore signaling that current value was read*/
+#endif
+
+#ifndef HSEM_current_written
+#define HSEM_current_written (2U) /* HW semaphore signaling that new current value was written*/
+#endif
+
+#define SRAM_BUFF_SIZE 2 // Size of the buffer used for shared memory
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -62,10 +74,10 @@ UART_HandleTypeDef huart3;
 
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
+/* Definitions for MakePrediction */
+osThreadId_t MakePredictionHandle;
+const osThreadAttr_t MakePrediction_attributes = {
+  .name = "MakePrediction",
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -74,11 +86,37 @@ osThreadId_t BlinkGreenLEDHandle;
 const osThreadAttr_t BlinkGreenLED_attributes = {
   .name = "BlinkGreenLED",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for SaveCurrent */
+osThreadId_t SaveCurrentHandle;
+uint32_t SaveCurrentBuffer[ 2048 ];
+osStaticThreadDef_t SaveCurrentControlBlock;
+const osThreadAttr_t SaveCurrent_attributes = {
+  .name = "SaveCurrent",
+  .cb_mem = &SaveCurrentControlBlock,
+  .cb_size = sizeof(SaveCurrentControlBlock),
+  .stack_mem = &SaveCurrentBuffer[0],
+  .stack_size = sizeof(SaveCurrentBuffer),
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
 
-// Model Ranges
+// inter-core buffers
+struct shared_data
+{
+	 float M4toM7[SRAM_BUFF_SIZE];
+	 float M7toM4[SRAM_BUFF_SIZE];
+};
+
+// pointer to shared_data struct (inter-core buffers and status)
+volatile struct shared_data __attribute__((section(".DATA_RAM_D3")))sram_mem;
+
+// message buffer
+float message_receive_buff[SRAM_BUFF_SIZE] = {0};
+float message_send_buff[SRAM_BUFF_SIZE] = {0};
+
+// Model Ranges NN
 float VALUES_RANGE = 2;
 float VALUES_MEAN = 0;
 float INPUT_1_RANGE = 3.125;
@@ -127,8 +165,9 @@ static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_CRC_Init(void);
 static void MX_TIM17_Init(void);
-void StartDefaultTask(void *argument);
+void StartMakePrediction(void *argument);
 void StartBlinkGreenLED(void *argument);
+void StartSaveCurrent(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -154,10 +193,10 @@ int main(void)
 /* USER CODE END Boot_Mode_Sequence_0 */
 
   /* Enable I-Cache---------------------------------------------------------*/
-  SCB_EnableICache();
+  //SCB_EnableICache();
 
   /* Enable D-Cache---------------------------------------------------------*/
-  SCB_EnableDCache();
+  //SCB_EnableDCache();
 
 /* USER CODE BEGIN Boot_Mode_Sequence_1 */
   /* Wait until CPU2 boots and enters in stop mode or timeout*/
@@ -209,6 +248,10 @@ Error_Handler();
   MX_TIM17_Init();
   /* USER CODE BEGIN 2 */
 
+	/* M7 is read to read current Value */
+	HAL_HSEM_FastTake(HSEM_current_read);
+
+
 	/* start timer */
 	HAL_TIM_Base_Start(&htim17);
 
@@ -234,6 +277,7 @@ Error_Handler();
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 	HAL_Delay(2000);
 
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -256,14 +300,20 @@ Error_Handler();
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  /* creation of MakePrediction */
+  MakePredictionHandle = osThreadNew(StartMakePrediction, NULL, &MakePrediction_attributes);
 
   /* creation of BlinkGreenLED */
   BlinkGreenLEDHandle = osThreadNew(StartBlinkGreenLED, NULL, &BlinkGreenLED_attributes);
 
+  /* creation of SaveCurrent */
+  SaveCurrentHandle = osThreadNew(StartSaveCurrent, NULL, &SaveCurrent_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+
+  // suspend till M4 requests prediction
+  osThreadSuspend(MakePredictionHandle);
+
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -522,14 +572,14 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_StartMakePrediction */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the MakePrediction thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+/* USER CODE END Header_StartMakePrediction */
+void StartMakePrediction(void *argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
@@ -575,9 +625,8 @@ void StartDefaultTask(void *argument)
 	prediction_error = (prediction_error < 0) ? prediction_error*(-1) : prediction_error;
 
 	// Print output of neural network
-	buf_len = sprintf(buf, "\nM7: pred_out %.3f | act_out %.3f | error %.3f%%  | time_model %lu us\r\n", predicted_out, actual_out, prediction_error, time_val);
+	buf_len = sprintf(buf, "\nM7: pred_out %.3f | act_out %.3f | error %.3f%%  | time_model %lu us\r\n\r\n", predicted_out, actual_out, prediction_error, time_val);
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
-	osDelay(1000);
   }
   /* USER CODE END 5 */
 }
@@ -600,6 +649,48 @@ void StartBlinkGreenLED(void *argument)
     osDelay(1000);
   }
   /* USER CODE END StartBlinkGreenLED */
+}
+
+/* USER CODE BEGIN Header_StartSaveCurrent */
+/**
+* @brief Function implementing the SaveCurrent thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartSaveCurrent */
+void StartSaveCurrent(void *argument)
+{
+  /* USER CODE BEGIN StartSaveCurrent */
+
+  /* Infinite loop */
+  for(;;)
+  {
+	// Wait for next current value
+	while(HAL_HSEM_IsSemTaken(HSEM_current_written) != 1){}
+	// signal that M7 got notification and is now resuming to read the new value
+	HAL_HSEM_Release(HSEM_current_read,0);
+
+	// read current values (protect by HSEM as saftey)
+	while(HAL_HSEM_FastTake(HSEM_ID_0) != HAL_OK){}
+	for(uint8_t n = 0; n < SRAM_BUFF_SIZE; n++)
+	{
+		message_receive_buff[n] = sram_mem.M4toM7[n];
+	}
+	HAL_HSEM_Release(HSEM_ID_0,0);
+
+	buf_len = sprintf(buf, "\nM7: sram_mem->M4toM7[0] %.3f | sram_mem->M4toM7[1] %.3f \r\n", sram_mem.M4toM7[0], sram_mem.M4toM7[1]);
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
+	// print data
+	buf_len = sprintf(buf, "\nM7: curr_a %.3f A | curr_b %.3f A\r\n", message_receive_buff[0], message_receive_buff[1]);
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
+	// Notify M7 that current was read
+	HAL_HSEM_FastTake(HSEM_current_read);
+	// make sure M4 got notification before task waits to read next value
+	while(HAL_HSEM_IsSemTaken(HSEM_current_written) == 1){}
+  }
+  /* USER CODE END StartSaveCurrent */
 }
 
 /**

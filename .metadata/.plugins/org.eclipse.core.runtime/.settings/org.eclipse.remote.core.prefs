@@ -3,6 +3,11 @@ connections/org.eclipse.remote.serial.core.connectionType/Notebook/serial.byteSi
 connections/org.eclipse.remote.serial.core.connectionType/Notebook/serial.parity=0
 connections/org.eclipse.remote.serial.core.connectionType/Notebook/serial.portName=COM3
 connections/org.eclipse.remote.serial.core.connectionType/Notebook/serial.stopBits=0
+connections/org.eclipse.remote.serial.core.connectionType/PC/serial.baudRate=11
+connections/org.eclipse.remote.serial.core.connectionType/PC/serial.byteSize=3
+connections/org.eclipse.remote.serial.core.connectionType/PC/serial.parity=0
+connections/org.eclipse.remote.serial.core.connectionType/PC/serial.portName=COM1
+connections/org.eclipse.remote.serial.core.connectionType/PC/serial.stopBits=0
 connections/org.eclipse.remote.serial.core.connectionType/STM32-CUBE-AI-TEST-DESKTOP/serial.baudRate=11
 connections/org.eclipse.remote.serial.core.connectionType/STM32-CUBE-AI-TEST-DESKTOP/serial.byteSize=3
 connections/org.eclipse.remote.serial.core.connectionType/STM32-CUBE-AI-TEST-DESKTOP/serial.parity=0

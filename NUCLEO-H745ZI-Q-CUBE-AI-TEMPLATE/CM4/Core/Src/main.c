@@ -48,6 +48,16 @@
 #define HSEM_ID_0 (0U) /* HW semaphore 0*/
 #endif
 
+#ifndef HSEM_current_read
+#define HSEM_current_read (1U) /* HW semaphore signaling that current value was read*/
+#endif
+
+#ifndef HSEM_current_written
+#define HSEM_current_written (2U) /* HW semaphore signaling that new current value was written*/
+#endif
+
+#define SRAM_BUFF_SIZE 2 // Size of the buffer used for shared memory
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -64,11 +74,11 @@ TIM_HandleTypeDef htim16;
 
 UART_HandleTypeDef huart3;
 
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
-  .stack_size = 256 * 4,
+/* Definitions for GetCurrent */
+osThreadId_t GetCurrentHandle;
+const osThreadAttr_t GetCurrent_attributes = {
+  .name = "GetCurrent",
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for BlinkYelowLED */
@@ -76,9 +86,23 @@ osThreadId_t BlinkYelowLEDHandle;
 const osThreadAttr_t BlinkYelowLED_attributes = {
   .name = "BlinkYelowLED",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
+
+// inter-core buffers
+struct shared_data
+{
+	 float M4toM7[SRAM_BUFF_SIZE];
+	 float M7toM4[SRAM_BUFF_SIZE];
+};
+
+// pointer to shared_data struct (inter-core buffers and status)
+volatile struct shared_data __attribute__((section(".DATA_RAM_D3")))sram_mem;
+
+// message buffer
+float message_receive_buff[SRAM_BUFF_SIZE] = {0};
+float message_send_buff[SRAM_BUFF_SIZE] = {0};
 
 // buffer for uart text
 char buf[500];
@@ -100,7 +124,7 @@ static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM16_Init(void);
 static void MX_ADC1_Init(void);
-void StartDefaultTask(void *argument);
+void StartGetCurrent(void *argument);
 void StartBlinkYelowLED(void *argument);
 
 /* USER CODE BEGIN PFP */
@@ -215,14 +239,14 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  /* creation of GetCurrent */
+  GetCurrentHandle = osThreadNew(StartGetCurrent, NULL, &GetCurrent_attributes);
 
   /* creation of BlinkYelowLED */
   BlinkYelowLEDHandle = osThreadNew(StartBlinkYelowLED, NULL, &BlinkYelowLED_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -603,19 +627,26 @@ void setDefaultRegisterStateDriver(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_StartGetCurrent */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the GetCurrent thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+/* USER CODE END Header_StartGetCurrent */
+void StartGetCurrent(void *argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   for(;;)
   {
+	// wait again for M7 to read the last value
+	while (HAL_HSEM_IsSemTaken(HSEM_current_read) != 1){}
+	// signal that M4 got notification and is now resuming to write next value
+	HAL_HSEM_Release(HSEM_current_written,0);
+
+	osDelay(1500);
+
 	// calculate momentary motor current and print value
 	CUR_A = (readDriver(TMC2130_MSCURACT)&TMC2130_CUR_A_MASK)>>TMC2130_CUR_A_SHIFT;
 	CUR_B = (readDriver(TMC2130_MSCURACT)&TMC2130_CUR_B_MASK)>>TMC2130_CUR_B_SHIFT;
@@ -628,13 +659,29 @@ void StartDefaultTask(void *argument)
 	current_b = (float)CUR_B*current_factor;
 
 	// print data
-	buf_len = sprintf(buf, "\nM4: curr_a %.3f A | curr_b %.3f A\r\n", current_a, current_b);
+	buf_len = sprintf(buf, "\n\nM4: curr_a %.3f A | curr_b %.3f A\r\n", current_a, current_b);
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
-	osDelay(1000);
-  }
 
-	buf_len = sprintf(buf, "\nTEST2\r\n");
+	// copy data to message buffer
+	message_send_buff[0] = current_a;
+	message_send_buff[1] = current_b;
+
+	// write message to shared SRAM (protect by HSEM as saftey)
+	while(HAL_HSEM_FastTake(HSEM_ID_0) != HAL_OK){}
+	for(uint8_t n = 0; n < SRAM_BUFF_SIZE; n++)
+	{
+		sram_mem.M4toM7[n] = message_send_buff[n];
+	}
+	HAL_HSEM_Release(HSEM_ID_0,0);
+
+	buf_len = sprintf(buf, "\nM4: sram_mem->M4toM7[0] %.3f | sram_mem->M4toM7[1] %.3f \r\n", sram_mem.M4toM7[0], sram_mem.M4toM7[1]);
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
+	// Notify M7 that current was written
+	HAL_HSEM_FastTake(HSEM_current_written);
+	// make sure M7 got notification before task waits to write again
+	while(HAL_HSEM_IsSemTaken(HSEM_current_read) == 1){}
+  }
 
   /* USER CODE END 5 */
 }
