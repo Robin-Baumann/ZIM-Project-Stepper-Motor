@@ -171,7 +171,7 @@ SECTIONS
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
   
-    .DATA_RAM_D3(NOLOAD):{
+  .DATA_RAM_D3(NOLOAD):{
   } >RAM_D3
 }
 

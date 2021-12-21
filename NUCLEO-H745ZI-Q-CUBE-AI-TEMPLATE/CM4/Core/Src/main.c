@@ -48,12 +48,28 @@
 #define HSEM_ID_0 (0U) /* HW semaphore 0*/
 #endif
 
+#ifndef HSEM_M4toM7
+#define HSEM_M4toM7 (1U) /* HW semaphore protecting read/write M4 to M7 */
+#endif
+
 #ifndef HSEM_current_read
-#define HSEM_current_read (1U) /* HW semaphore signaling that current value was read*/
+#define HSEM_current_read (2U) /* HW semaphore signaling that current value was read*/
 #endif
 
 #ifndef HSEM_current_written
-#define HSEM_current_written (2U) /* HW semaphore signaling that new current value was written*/
+#define HSEM_current_written (3U) /* HW semaphore signaling that new current value was written*/
+#endif
+
+#ifndef HSEM_M7toM4
+#define HSEM_M7toM4 (4U) /* HW semaphore protecting read/write M7 to M4 */
+#endif
+
+#ifndef HSEM_prediction_read
+#define HSEM_prediction_read (5U) /* HW semaphore signaling that current value was read*/
+#endif
+
+#ifndef HSEM_prediction_written
+#define HSEM_prediction_written (6U) /* HW semaphore signaling that new current value was written*/
 #endif
 
 #define SRAM_BUFF_SIZE 2 // Size of the buffer used for shared memory
@@ -86,6 +102,13 @@ osThreadId_t BlinkYelowLEDHandle;
 const osThreadAttr_t BlinkYelowLED_attributes = {
   .name = "BlinkYelowLED",
   .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for GetPrediction */
+osThreadId_t GetPredictionHandle;
+const osThreadAttr_t GetPrediction_attributes = {
+  .name = "GetPrediction",
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
@@ -126,6 +149,7 @@ static void MX_TIM16_Init(void);
 static void MX_ADC1_Init(void);
 void StartGetCurrent(void *argument);
 void StartBlinkYelowLED(void *argument);
+void StartGetPrediction(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -190,6 +214,9 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
+	/* M4 is read to read prediction */
+	HAL_HSEM_FastTake(HSEM_prediction_read);
+
 	/* Init UART */
 	MX_USART3_UART_Init();
 
@@ -207,7 +234,7 @@ int main(void)
 
 
 	/* say hello */
-	buf_len = sprintf(buf, "\nCortex M4 Hello!\r\n");
+	buf_len = sprintf(buf, "\r\n\r\nCortex M4 Hello!");
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 	HAL_Delay(1000);
 
@@ -245,8 +272,11 @@ int main(void)
   /* creation of BlinkYelowLED */
   BlinkYelowLEDHandle = osThreadNew(StartBlinkYelowLED, NULL, &BlinkYelowLED_attributes);
 
-  /* USER CODE BEGIN RTOS_THREADS */
+  /* creation of GetPrediction */
+  GetPredictionHandle = osThreadNew(StartGetPrediction, NULL, &GetPrediction_attributes);
 
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -659,7 +689,7 @@ void StartGetCurrent(void *argument)
 	current_b = (float)CUR_B*current_factor;
 
 	// print data
-	buf_len = sprintf(buf, "\n\nM4: curr_a %.3f A | curr_b %.3f A\r\n", current_a, current_b);
+	buf_len = sprintf(buf, "\r\n\r\nM4: curr_a %.3f A | curr_b %.3f A", current_a, current_b);
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 
 	// copy data to message buffer
@@ -667,15 +697,12 @@ void StartGetCurrent(void *argument)
 	message_send_buff[1] = current_b;
 
 	// write message to shared SRAM (protect by HSEM as saftey)
-	while(HAL_HSEM_FastTake(HSEM_ID_0) != HAL_OK){}
+	while(HAL_HSEM_FastTake(HSEM_M4toM7) != HAL_OK){}
 	for(uint8_t n = 0; n < SRAM_BUFF_SIZE; n++)
 	{
 		sram_mem.M4toM7[n] = message_send_buff[n];
 	}
-	HAL_HSEM_Release(HSEM_ID_0,0);
-
-	buf_len = sprintf(buf, "\nM4: sram_mem->M4toM7[0] %.3f | sram_mem->M4toM7[1] %.3f \r\n", sram_mem.M4toM7[0], sram_mem.M4toM7[1]);
-	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+	HAL_HSEM_Release(HSEM_M4toM7,0);
 
 	// Notify M7 that current was written
 	HAL_HSEM_FastTake(HSEM_current_written);
@@ -704,6 +731,44 @@ void StartBlinkYelowLED(void *argument)
     osDelay(1000);
   }
   /* USER CODE END StartBlinkYelowLED */
+}
+
+/* USER CODE BEGIN Header_StartGetPrediction */
+/**
+* @brief Function implementing the GetPrediction thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartGetPrediction */
+void StartGetPrediction(void *argument)
+{
+  /* USER CODE BEGIN StartGetPrediction */
+  /* Infinite loop */
+  for(;;)
+  {
+	// Wait for prediciton
+	while(HAL_HSEM_IsSemTaken(HSEM_prediction_written) != 1){}
+	// signal that M7 got notification and is now resuming to read the new value
+	HAL_HSEM_Release(HSEM_prediction_read,0);
+
+	// read prediction (protect by HSEM as saftey)
+	while(HAL_HSEM_FastTake(HSEM_M7toM4) != HAL_OK){}
+	for(uint8_t n = 0; n < SRAM_BUFF_SIZE; n++)
+	{
+		message_receive_buff[n] = sram_mem.M7toM4[n];
+	}
+	HAL_HSEM_Release(HSEM_M7toM4,0);
+
+	// Print prediction
+	buf_len = sprintf(buf, "\r\nM4: prediction error %.3f%%  | time_model %.0f us", message_receive_buff[0], message_receive_buff[1]);
+	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
+	// Notify M7 that current was read
+	HAL_HSEM_FastTake(HSEM_prediction_read);
+	// make sure M4 got notification before task waits to read next value
+	while(HAL_HSEM_IsSemTaken(HSEM_prediction_written) == 1){}
+  }
+  /* USER CODE END StartGetPrediction */
 }
 
 /**

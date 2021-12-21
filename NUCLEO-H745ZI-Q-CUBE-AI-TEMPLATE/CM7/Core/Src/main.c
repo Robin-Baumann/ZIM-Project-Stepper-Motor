@@ -47,12 +47,28 @@ typedef StaticTask_t osStaticThreadDef_t;
 #define HSEM_ID_0 (0U) /* HW semaphore 0*/
 #endif
 
+#ifndef HSEM_M4toM7
+#define HSEM_M4toM7 (1U) /* HW semaphore protecting read/write M4 to M7 */
+#endif
+
 #ifndef HSEM_current_read
-#define HSEM_current_read (1U) /* HW semaphore signaling that current value was read*/
+#define HSEM_current_read (2U) /* HW semaphore signaling that current value was read*/
 #endif
 
 #ifndef HSEM_current_written
-#define HSEM_current_written (2U) /* HW semaphore signaling that new current value was written*/
+#define HSEM_current_written (3U) /* HW semaphore signaling that new current value was written*/
+#endif
+
+#ifndef HSEM_M7toM4
+#define HSEM_M7toM4 (4U) /* HW semaphore protecting read/write M7 to M4 */
+#endif
+
+#ifndef HSEM_prediction_read
+#define HSEM_prediction_read (5U) /* HW semaphore signaling that current value was read*/
+#endif
+
+#ifndef HSEM_prediction_written
+#define HSEM_prediction_written (6U) /* HW semaphore signaling that new current value was written*/
 #endif
 
 #define SRAM_BUFF_SIZE 2 // Size of the buffer used for shared memory
@@ -90,7 +106,7 @@ const osThreadAttr_t BlinkGreenLED_attributes = {
 };
 /* Definitions for SaveCurrent */
 osThreadId_t SaveCurrentHandle;
-uint32_t SaveCurrentBuffer[ 2048 ];
+uint32_t SaveCurrentBuffer[ 512 ];
 osStaticThreadDef_t SaveCurrentControlBlock;
 const osThreadAttr_t SaveCurrent_attributes = {
   .name = "SaveCurrent",
@@ -160,6 +176,7 @@ ai_buffer ai_output[] = AI_SINE_MODEL_OUT;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
@@ -192,11 +209,14 @@ int main(void)
   int32_t timeout;
 /* USER CODE END Boot_Mode_Sequence_0 */
 
+  /* MPU Configuration--------------------------------------------------------*/
+  MPU_Config();
+
   /* Enable I-Cache---------------------------------------------------------*/
-  //SCB_EnableICache();
+  SCB_EnableICache();
 
   /* Enable D-Cache---------------------------------------------------------*/
-  //SCB_EnableDCache();
+  SCB_EnableDCache();
 
 /* USER CODE BEGIN Boot_Mode_Sequence_1 */
   /* Wait until CPU2 boots and enters in stop mode or timeout*/
@@ -248,7 +268,7 @@ Error_Handler();
   MX_TIM17_Init();
   /* USER CODE BEGIN 2 */
 
-	/* M7 is read to read current Value */
+	/* M7 is read to read current value */
 	HAL_HSEM_FastTake(HSEM_current_read);
 
 
@@ -273,7 +293,7 @@ Error_Handler();
 
 
 	/* Say Hello */
-	buf_len = sprintf(buf, "\nCortex M7 Hello!\r\n");
+	buf_len = sprintf(buf, "\r\n\r\nCortex M7 Hello!");
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 	HAL_Delay(2000);
 
@@ -310,10 +330,7 @@ Error_Handler();
   SaveCurrentHandle = osThreadNew(StartSaveCurrent, NULL, &SaveCurrent_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-
-  // suspend till M4 requests prediction
-  osThreadSuspend(MakePredictionHandle);
-
+  /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -585,6 +602,13 @@ void StartMakePrediction(void *argument)
   /* Infinite loop */
   for(;;)
   {
+	// wait again for M4 to read the last value
+	while (HAL_HSEM_IsSemTaken(HSEM_prediction_read) != 1){}
+	// signal that M4 got notification and is now resuming to write next value
+	HAL_HSEM_Release(HSEM_prediction_written,0);
+
+	osDelay(1500);
+
 	// Calculate input
 	idx ++;
 	for (uint32_t i = 0; i < AI_SINE_MODEL_IN_1_HEIGHT; i++)
@@ -625,8 +649,25 @@ void StartMakePrediction(void *argument)
 	prediction_error = (prediction_error < 0) ? prediction_error*(-1) : prediction_error;
 
 	// Print output of neural network
-	buf_len = sprintf(buf, "\nM7: pred_out %.3f | act_out %.3f | error %.3f%%  | time_model %lu us\r\n\r\n", predicted_out, actual_out, prediction_error, time_val);
+	buf_len = sprintf(buf, "\r\n\r\nM7: prediction error %.3f%%  | time_model %lu us", prediction_error, time_val);
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+
+	// copy data to message buffer
+	message_send_buff[0] = prediction_error;
+	message_send_buff[1] = time_val;
+
+	// write message to shared SRAM (protect by HSEM as saftey)
+	while(HAL_HSEM_FastTake(HSEM_M7toM4) != HAL_OK){}
+	for(uint8_t n = 0; n < SRAM_BUFF_SIZE; n++)
+	{
+		sram_mem.M7toM4[n] = message_send_buff[n];
+	}
+	HAL_HSEM_Release(HSEM_M7toM4,0);
+
+	// Notify M4 that prediciton was written
+	HAL_HSEM_FastTake(HSEM_prediction_written);
+	// make sure M7 got notification before task waits to write again
+	while(HAL_HSEM_IsSemTaken(HSEM_prediction_read) == 1){}
   }
   /* USER CODE END 5 */
 }
@@ -671,18 +712,15 @@ void StartSaveCurrent(void *argument)
 	HAL_HSEM_Release(HSEM_current_read,0);
 
 	// read current values (protect by HSEM as saftey)
-	while(HAL_HSEM_FastTake(HSEM_ID_0) != HAL_OK){}
+	while(HAL_HSEM_FastTake(HSEM_M4toM7) != HAL_OK){}
 	for(uint8_t n = 0; n < SRAM_BUFF_SIZE; n++)
 	{
 		message_receive_buff[n] = sram_mem.M4toM7[n];
 	}
-	HAL_HSEM_Release(HSEM_ID_0,0);
-
-	buf_len = sprintf(buf, "\nM7: sram_mem->M4toM7[0] %.3f | sram_mem->M4toM7[1] %.3f \r\n", sram_mem.M4toM7[0], sram_mem.M4toM7[1]);
-	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
+	HAL_HSEM_Release(HSEM_M4toM7,0);
 
 	// print data
-	buf_len = sprintf(buf, "\nM7: curr_a %.3f A | curr_b %.3f A\r\n", message_receive_buff[0], message_receive_buff[1]);
+	buf_len = sprintf(buf, "\r\nM7: curr_a %.3f A | curr_b %.3f A", message_receive_buff[0], message_receive_buff[1]);
 	HAL_UART_Transmit(&huart3, (uint8_t *)buf, buf_len, 100);
 
 	// Notify M7 that current was read
@@ -691,6 +729,34 @@ void StartSaveCurrent(void *argument)
 	while(HAL_HSEM_IsSemTaken(HSEM_current_written) == 1){}
   }
   /* USER CODE END StartSaveCurrent */
+}
+
+/* MPU Configuration */
+
+void MPU_Config(void)
+{
+  MPU_Region_InitTypeDef MPU_InitStruct = {0};
+
+  /* Disables the MPU */
+  HAL_MPU_Disable();
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER0;
+  MPU_InitStruct.BaseAddress = 0x38000000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_64KB;
+  MPU_InitStruct.SubRegionDisable = 0x0;
+  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+  /* Enables the MPU */
+  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+
 }
 
 /**

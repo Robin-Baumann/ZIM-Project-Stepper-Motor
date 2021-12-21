@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    sine_model.c
   * @author  AST Embedded Analytics Research Platform
-  * @date    Fri Dec 17 18:03:13 2021
+  * @date    Tue Dec 21 12:08:44 2021
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * @attention
@@ -43,7 +43,7 @@
 #endif
 
 #undef AI_TOOLS_DATE_TIME
-#define AI_TOOLS_DATE_TIME   "Fri Dec 17 18:03:13 2021"
+#define AI_TOOLS_DATE_TIME   "Tue Dec 21 12:08:44 2021"
 
 #undef AI_TOOLS_COMPILE_TIME
 #define AI_TOOLS_COMPILE_TIME    __DATE__ " " __TIME__
