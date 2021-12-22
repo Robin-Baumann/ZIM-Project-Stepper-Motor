@@ -6,6 +6,7 @@
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="CLK"/>
 			<item value="ca"/>
 			<item value="cach"/>
 			<item value="\nM"/>
@@ -13,7 +14,6 @@
 			<item value="Cach"/>
 			<item value="sram_ptr"/>
 			<item value="__attribute__"/>
-			<item value="RAM_D3"/>
 		</list>
 		<list key="replacehistory">
 			<item value="sram_mem"/>
