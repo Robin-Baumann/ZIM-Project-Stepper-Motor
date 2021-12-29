@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;NUCLEO-H745ZI-Q-TFLITE-RNN_CM7/tensorflow_lite/tensorflow/lite/micro/examples&apos;" deleteContents="false" description="Delete resource &apos;NUCLEO-H745ZI-Q-TFLITE-RNN_CM7/tensorflow_lite/tensorflow/lite/micro/examples&apos;" element1="/NUCLEO-H745ZI-Q-TFLITE-RNN_CM7/tensorflow_lite/tensorflow/lite/micro/examples" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1630679610170"/>
-</session>
